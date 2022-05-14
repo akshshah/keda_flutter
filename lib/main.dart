@@ -18,6 +18,7 @@ void main() async {
   // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
 
   final AppModel _appModel = AppModel();
+
   await _appModel.setupInitial();
   runApp(ApplicationWrapper(appModel: _appModel,));
 
