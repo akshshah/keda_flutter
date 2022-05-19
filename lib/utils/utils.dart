@@ -1,6 +1,11 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keda_flutter/control/progress_dialog.dart';
+import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/filter_bottom_sheet.dart';
+import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/filter_category_bottom_sheet.dart';
+import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/filter_distance_bottom_sheet.dart';
 import 'package:keda_flutter/utils/ui_text_style.dart';
 import '../control/alert_widget.dart';
 import 'app_color.dart';
@@ -143,8 +148,7 @@ class Utils {
       {int duration = 3, SnackBarAction? action}) {
     final text = Text(
       message,
-      style: UITextStyle.getTextStyle(
-        fontWeight: FontWeight.w500,
+      style: UITextStyle.mediumTextStyle(
         fontSize: 14,
         color: AppColor.whiteColor,
       ),
@@ -152,7 +156,7 @@ class Utils {
 
     final snackBar = SnackBar(
       content: text,
-      backgroundColor: AppColor.heading_text,
+      backgroundColor: AppColor.colorPrimary,
       duration: Duration(seconds: duration),
       action: action,
     );
@@ -266,13 +270,13 @@ class Utils {
   //   return isInternet;
   // }
 
-  // static void showProgressDialog(BuildContext context) {
-  //   Logger().v("DisPlay Loader");
-  //   showDialog(
-  //       barrierDismissible: false,
-  //       context: context,
-  //       builder: (_) => ProgressDiloag());
-  // }
+  static void showProgressDialog(BuildContext context) {
+    Logger().v("DisPlay Loader");
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) => const ProgressDialog());
+  }
 
   static Future dismissProgressDialog(BuildContext context) async {
     /// This Delay Added due to loader open or not
@@ -305,5 +309,45 @@ class Utils {
         ),
       ),
     );
+  }
+
+  static Future<dynamic> customBottomSheet({required BuildContext context, required String sheetName}){
+    return showModalBottomSheet<dynamic>(
+        isScrollControlled: true,
+        isDismissible: true,
+        context: context,
+        enableDrag: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0),
+            topRight: Radius.circular(16.0),
+          ),
+        ),
+        builder: (BuildContext bc) {
+          return DraggableScrollableSheet(
+              initialChildSize: 0.6,
+              maxChildSize: 1 - (AppBar().preferredSize.height / MediaQuery.of(context).size.height),
+              minChildSize: 0.4,
+              expand: false,
+              snap: true,
+              snapSizes: const [0.4,],
+              builder: (_,controller) {
+                switch(sheetName){
+                  case "FilterBottomSheet":
+                    return FilterBottomSheet(scrollController: controller);
+                  case "CategoryBottomSheet":
+                    return FilterCategoryBottomSheet(scrollController: controller,);
+                  case "MinDistanceBottomSheet":
+                    return FilterDistanceBottomSheet(scrollController: controller, distanceType: "Min",);
+                  case "MaxDistanceBottomSheet":
+                    return FilterDistanceBottomSheet(scrollController: controller, distanceType: "Max",);
+                  default:
+                    return SizedBox();
+                }
+              });
+        }
+    ).then((value) {
+      return Future(() => value);
+    });
   }
 }

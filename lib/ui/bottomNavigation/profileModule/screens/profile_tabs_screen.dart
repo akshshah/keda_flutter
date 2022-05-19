@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keda_flutter/utils/ui_text_style.dart';
 
 import '../../../../utils/app_color.dart';
 import 'about_me_tab.dart';
@@ -13,10 +14,10 @@ class ProfileTabsScreen extends StatelessWidget {
     return DefaultTabController(length: 2,
       child: Scaffold(
         appBar: AppBar(
-          flexibleSpace: const PreferredSize(
-            preferredSize: Size.fromHeight(50),
+          flexibleSpace:  PreferredSize(
+            preferredSize: const Size.fromHeight(50),
             child: DecoratedBox(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                     bottom:
                     BorderSide(width: 2, color: AppColor.light_sky_blue)),
@@ -24,18 +25,14 @@ class ProfileTabsScreen extends StatelessWidget {
               child: TabBar(
                 unselectedLabelColor: AppColor.tab_unselected,
                 labelColor: AppColor.colorPrimary,
-                indicator: BoxDecoration(
+                indicator: const BoxDecoration(
                   border: Border(
                       bottom:
                       BorderSide(width: 2, color: AppColor.colorPrimary)),
                 ),
                 indicatorColor: AppColor.light_sky_blue,
-                labelStyle: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "Raleway",
-                    letterSpacing: 0.4,
-                    fontSize: 14),
-                tabs: [
+                labelStyle: UITextStyle.semiBoldTextStyle(letterSpacing: 0.5, fontSize: 14),
+                tabs: const [
                   Tab(
                     child: Align(
                       alignment: Alignment.center,

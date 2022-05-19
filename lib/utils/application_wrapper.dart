@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:keda_flutter/providers/login_screen_provider.dart';
 import 'package:keda_flutter/utils/app_font.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,7 @@ class ApplicationWrapper extends StatelessWidget {
           return MultiProvider(
             providers: [
               Provider<BaseBloc>.value(value: BaseBloc()),
+              ChangeNotifierProvider(create: (ctx) => LoginProvider()),
             ],
             child: ScreenUtilInit(
               designSize: const Size(375, 812),

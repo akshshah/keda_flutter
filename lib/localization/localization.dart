@@ -65,6 +65,7 @@ class Translations implements WidgetsLocalizations {
   String get btnAdd => 'Add';
   String get btnConfirm => 'Confirm';
   String get btnUpdate => 'Update';
+  String get btnSend => 'SEND';
 
   /* Login Page */
   String get strLogout => 'Logout';
@@ -77,8 +78,9 @@ class Translations implements WidgetsLocalizations {
   String get strForgotPasswordWithQuestion => 'Forgot?';
 
  /* Forgot Password Screen*/
-  String get strForgotDescription => 'Enter Your username or email address and select ';
+  String get strForgotDescription => 'Please enter your registered email or phone number to receive a verification code.';
   String get strSendEmail => 'Send Email';
+  String get strForgotPassword => 'Forgot Password?';
   String get strVerify => 'Verify';
   String get strCheckYourEmail => 'Check your email';
   String get strCheckYourEmailDescription => 'You\'ll receive a code to verify here so you can change your account password.';

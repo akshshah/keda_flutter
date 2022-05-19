@@ -1,17 +1,77 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:keda_flutter/localization/localization.dart';
+import 'package:keda_flutter/providers/login_screen_provider.dart';
 import 'package:keda_flutter/ui/authentication/register_screen.dart';
 import 'package:keda_flutter/utils/app_color.dart';
 import 'package:keda_flutter/utils/app_image.dart';
 import 'package:keda_flutter/utils/mixin/common_widget.dart';
 import 'package:keda_flutter/utils/ui_text_style.dart';
+import 'package:provider/provider.dart';
 
+
+import '../../utils/logger.dart';
+import '../../utils/utils.dart';
 import '../home_screen.dart';
 import 'forgot_password_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  late LoginProvider loginProvider;
+
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passFocusNode = FocusNode();
+
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+
+  @override
+  void initState() {
+    loginProvider = Provider.of<LoginProvider>(context, listen: false);
+    super.initState();
+  }
+
+  checkValidationAndApiCall() {
+    FocusScope.of(context).unfocus();
+
+    final validationResult = loginProvider.isValidForm();
+    Logger().v("Result $validationResult");
+    if (!validationResult.item1) {
+      Utils.showSnackBarWithContext(context, validationResult.item2);
+      return;
+    }
+
+    Utils.showProgressDialog(context);
+
+    loginProvider.loginApi().then((response) async {
+      await Utils.dismissProgressDialog(context);
+      Logger().e("Response Code : === ${response.status} " );
+      if (response.status == 200) {
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      }
+      else if(response.status == 204){
+        Utils.showSnackBarWithContext(context, "Incorrect email, phone or password. Please try again.");
+      }
+      else {
+        Utils.showSnackBarWithContext(context, response.message?? "");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +110,10 @@ class LoginScreen extends StatelessWidget {
                     height: 20,
                   ),
                   CommonWidget.createTextField(
-                    labelText: Translations.of(context).strEmailPhone
+                    labelText: Translations.of(context).strEmailPhone,
+                    controller: _emailController,
+                    action:TextInputAction.next,
+                    onChanged: loginProvider.emailFunction,
                   ),
                   const SizedBox(
                     height: 20,
@@ -59,7 +122,10 @@ class LoginScreen extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     children: [
                       CommonWidget.createTextField(
-                          labelText: Translations.of(context).strPassword
+                        labelText: Translations.of(context).strPassword,
+                        controller: _passwordController,
+                        action: TextInputAction.done,
+                        onChanged: loginProvider.passwordFunction,
                       ),
                       Positioned(
                         height: 40,
@@ -76,7 +142,7 @@ class LoginScreen extends StatelessWidget {
                     height: 60,
                   ),
                   CommonWidget.myFullButton(Translations.of(context).login,  () {
-                    Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+                    checkValidationAndApiCall();
                   }),
                   const SizedBox(
                     height: 30,

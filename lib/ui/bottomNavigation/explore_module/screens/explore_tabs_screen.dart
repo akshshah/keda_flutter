@@ -4,6 +4,8 @@ import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/deals_in
 
 import 'package:keda_flutter/utils/app_color.dart';
 
+import '../../../../utils/ui_text_style.dart';
+
 
 class ExploreTabsScreen extends StatelessWidget {
   const ExploreTabsScreen({Key? key}) : super(key: key);
@@ -14,10 +16,10 @@ class ExploreTabsScreen extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            flexibleSpace: const PreferredSize(
-              preferredSize: Size.fromHeight(50),
+            flexibleSpace: PreferredSize(
+              preferredSize: const Size.fromHeight(50),
               child: DecoratedBox(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                       bottom:
                       BorderSide(width: 2, color: AppColor.light_sky_blue)),
@@ -25,18 +27,14 @@ class ExploreTabsScreen extends StatelessWidget {
                 child: TabBar(
                   unselectedLabelColor: AppColor.tab_unselected,
                   labelColor: AppColor.colorPrimary,
-                  indicator: BoxDecoration(
+                  indicator: const BoxDecoration(
                     border: Border(
                         bottom:
                             BorderSide(width: 2, color: AppColor.colorPrimary)),
                   ),
                   indicatorColor: AppColor.light_sky_blue,
-                  labelStyle: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "Raleway",
-                      letterSpacing: 0.4,
-                      fontSize: 14),
-                  tabs: [
+                  labelStyle: UITextStyle.semiBoldTextStyle(letterSpacing: 0.5, fontSize: 14),
+                  tabs: const [
                     Tab(
                       child: Align(
                         alignment: Alignment.center,

@@ -31,6 +31,7 @@ class AppModel with ChangeNotifier {
     // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     //   statusBarColor: AppColor.whiteColor,
     //   statusBarIconBrightness: Brightness.dark,
+    //   sta
     // ));
     Logger().v(" ------ Perform Initial Setup ------ ");
 

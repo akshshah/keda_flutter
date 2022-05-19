@@ -92,16 +92,19 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       IconButton(
                                         constraints: const BoxConstraints(),
-                                          padding: const EdgeInsets.all(3),
-                                          onPressed: (){
+                                        padding: const EdgeInsets.all(3),
+                                        onPressed: () {
                                           print("pressed");
-                                          },
-                                          iconSize: 20,
-                                          icon: const Icon(Icons.edit, color: AppColor.dark_sky_blue,)
+                                        },
+                                        iconSize: 20,
+                                        icon: const Icon(
+                                          Icons.edit,
+                                          color: AppColor.dark_sky_blue,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 5,),
+                                  const SizedBox(height: 5,),
                                   Row(
                                     children: [
                                      RatingBarIndicator(

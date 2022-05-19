@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:keda_flutter/service/response/login_response.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 import '../localization/app_model.dart';
@@ -24,13 +25,13 @@ class PreferenceKey {
 
 class ApiConstant {
 
-  static String get baseDomain => 'https://ishaanadvisory.in/work/';
+  static String get baseDomain => "https://keda-webapi.api.openxcell.dev/api/";
   static String googlePlacesKey = '';
 
   static String getValue(ApiType type) {
     switch (type) {
       case ApiType.login:
-        return 'api/login';
+        return 'user/login';
       case ApiType.logout:
         return '/api/logout';
       case ApiType.changePassword:
@@ -68,13 +69,13 @@ class ApiConstant {
     headers['language'] = appModel.appLocal.apiLanguageCode;
 
     if (type == ApiType.login || type == ApiType.signUp) {
-      paramsFinal['deviceType'] = DeviceUtil().deviceType;
-      paramsFinal['deviceId'] = DeviceUtil().deviceId;
-      paramsFinal['fcmToken'] = FireBaseCloudMessagingWrapper().fcmToken;
+      // paramsFinal['deviceType'] = DeviceUtil().deviceType;
+      // paramsFinal['deviceId'] = DeviceUtil().deviceId;
+      // paramsFinal['fcmToken'] = FireBaseCloudMessagingWrapper().fcmToken;
     }
 
-    if ((AppUser.currentUser.accessToken != null) && AppUser.currentUser.accessToken!.isNotEmpty) {
-      headers['Authorization'] = AppUser.currentUser.accessToken!;
+    if ((Data.currentUser.accessToken != null) && Data.currentUser.accessToken!.isNotEmpty) {
+      headers['Authorization'] = Data.currentUser.accessToken!;
     }
 
     Logger().d("Request Start Time :: ${DateTime.now()}");

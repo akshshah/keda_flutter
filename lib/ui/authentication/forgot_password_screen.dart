@@ -1,8 +1,12 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../localization/localization.dart';
 import '../../ui/authentication/register_screen.dart';
 import '../../utils/app_color.dart';
+import '../../utils/mixin/common_widget.dart';
 import '../../utils/styles.dart';
+import '../../utils/ui_text_style.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
@@ -22,51 +26,47 @@ class ForgotPasswordScreen extends StatelessWidget {
               margin: const EdgeInsets.fromLTRB(24, 0, 24, 24),
               child: Column(
                 children: [
-                  const Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 30,
-                        color: AppColor.heading_text),
+                  Text(
+                    Translations.of(context).strForgotPassword,
+                    style: UITextStyle.boldTextStyle(fontSize: 30, color: AppColor.heading_text),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    "Please enter your registered email or phone number to receive a verification code.",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w200,
-                        fontSize: 17,
-                        color: AppColor.heading_text, ),
-                      textAlign: TextAlign.center,
+                  Text(
+                    Translations.of(context).strForgotDescription,
+                    style: UITextStyle.regularTextStyle(fontSize: 17, color: AppColor.heading_text),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(
                     height: 30,
                   ),
-                  TextFormField(
-                    decoration: Styles.myInputDecoration("Email or Phone Number"),
-                    textInputAction: TextInputAction.next,
-                    style: const TextStyle(fontSize: 18),
+                  CommonWidget.createTextField(
+                      labelText: Translations.of(context).strEmailPhone
                   ),
                   const SizedBox(
                     height: 120,
                   ),
-                  Styles.myFullButton("SEND", (){
-
+                  CommonWidget.myFullButton(Translations.of(context).btnSend,  () {
                   }),
                   const SizedBox(
                     height: 25,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Don't have an account?", style: TextStyle(color: AppColor.heading_text),),
-                      TextButton(
-                          onPressed: (){
-                            Navigator.of(context).pushReplacementNamed(RegisterScreen.routeName);
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                          text: 'Don\'t have an account?',
+                          style: UITextStyle.regularTextStyle(
+                              color: AppColor.heading_text)),
+                      TextSpan(
+                        text: ' REGISTER',
+                        style: UITextStyle.boldTextStyle(color: AppColor.colorPrimary),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.of(context).pushNamed(RegisterScreen.routeName);
                           },
-                          child: const Text("REGISTER", style: TextStyle(fontWeight: FontWeight.w700),))
-                    ],
+                      ),
+                    ]),
                   ),
                 ],
               ),

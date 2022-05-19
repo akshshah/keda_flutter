@@ -1,57 +1,40 @@
 import 'package:flutter/material.dart';
-
+import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/filter_bottom_sheet.dart';
 import 'package:keda_flutter/utils/app_color.dart';
+import 'package:keda_flutter/utils/utils.dart';
 
 import 'explore_tabs_screen.dart';
-import 'filter_bottom_sheet.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({Key? key}) : super(key: key);
 
   void _showFilterBottomSheet(BuildContext ctx){
-    showModalBottomSheet<dynamic>(
-        isScrollControlled: true,
-        context: ctx,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25.0),
-            topRight: Radius.circular(25.0),
-          ),
-        ),
-        builder: (BuildContext bc) {
-          return Container(
-            constraints: BoxConstraints(maxHeight: MediaQuery.of(bc).size.height * 0.965),
-            child: Wrap(
-              children:[
-                FilterBottomSheet(),
-              ]
-            ),
-          );
-        }
-    );
+    // showModalBottomSheet<dynamic>(
+    //     isScrollControlled: true,
+    //     isDismissible: true,
+    //     context: ctx,
+    //     enableDrag: true,
+    //     shape: const RoundedRectangleBorder(
+    //       borderRadius: BorderRadius.only(
+    //         topLeft: Radius.circular(16.0),
+    //         topRight: Radius.circular(16.0),
+    //       ),
+    //     ),
+    //     builder: (BuildContext bc) {
+    //       return DraggableScrollableSheet(
+    //           initialChildSize: 0.6,
+    //           maxChildSize: 1 - (AppBar().preferredSize.height / MediaQuery.of(ctx).size.height),
+    //           minChildSize: 0.4,
+    //           expand: false,
+    //           snap: true,
+    //           snapSizes: const [0.4,],
+    //           builder: (_,controller) {
+    //         return FilterBottomSheet(scrollController: controller,);
+    //       });
+    //     }
+    // );
+    Utils.customBottomSheet(context: ctx, sheetName:  "FilterBottomSheet");
   }
-
-  // void _showFilterBottomSheet(BuildContext ctx){
-  //   showModalBottomSheet<dynamic>(
-  //       isScrollControlled: true,
-  //       isDismissible: true,
-  //       context: ctx,
-  //       shape: const RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.only(
-  //           topLeft: Radius.circular(25.0),
-  //           topRight: Radius.circular(25.0),
-  //         ),
-  //       ),
-  //       builder: (BuildContext bc) {
-  //         return DraggableScrollableSheet(
-  //             // minChildSize: 0.2,
-  //             // maxChildSize: 0.80,
-  //             builder: (_,controller) {
-  //           return FilterBottomSheet();
-  //         });
-  //       }
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {

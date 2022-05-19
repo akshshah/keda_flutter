@@ -1,11 +1,16 @@
 
+import 'package:keda_flutter/service/request/login_request.dart';
+import 'package:keda_flutter/service/response/login_response.dart';
+
+import 'api_provider.dart';
+
 class AppRepository {
-  // final apiProvider = ApiProvider();
+  final apiProvider = ApiProvider();
 
   /* region start */
 
-  //Login Api
-  // Future<LoginResponse> loginApi(LoginRequest params) => apiProvider.loginApi(params);
+  // Login Api
+  Future<LoginResponse> loginApi(LoginRequest params) => apiProvider.loginApi(params);
   //
   // //Logout Api
   // Future<BaseResponse> logoutApi() => apiProvider.logoutApi();

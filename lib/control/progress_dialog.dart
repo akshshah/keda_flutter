@@ -4,13 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/app_color.dart';
 
 class ProgressDialog extends StatelessWidget {
+  const   ProgressDialog({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        child: SpinKitRipple(
-          color: AppColor.whiteColor,
-          size: 100.w,
-          borderWidth: 8.0,
+        child: SpinKitRing(
+          color: AppColor.colorPrimary,
+          size: 50.w,
+          lineWidth: 5,
         ),
         onWillPop: _onBackSpace);
   }
