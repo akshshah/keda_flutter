@@ -1,21 +1,19 @@
 import 'dart:convert';
 
+import 'package:keda_flutter/service/base_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api_constant.dart';
 
-class LoginResponse {
-  int? status;
-  String? message;
+class LoginResponse extends BaseResponse {
   Data? loginUserData;
 
-  LoginResponse({this.status, this.message, this.loginUserData});
+  LoginResponse({int? status, String? message, this.loginUserData}) : super(status: status, message: message);
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    loginUserData =
-    json['data'] != null ? Data.fromJson(json['data']) : null;
+    loginUserData = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -71,7 +69,7 @@ class Data{
     data['id'] = id;
     data['user_name'] = username;
     data['email'] = email;
-    data['profile_pic'] = profilePicture;
+    data['profile_picture'] = profilePicture;
     data['mobile'] = mobile;
     data['refresh_token'] = refreshToken;
     data['token'] = accessToken;
@@ -94,8 +92,8 @@ class Data{
     email = json['email'] ?? email;
     profilePicture = json['profile_picture'] ?? profilePicture;
     refreshToken = json['refresh_token'] ?? refreshToken;
-    accessToken = json['email'] ?? accessToken;
-    mobile = json['token'] ?? mobile;
+    accessToken = json['token'] ?? accessToken;
+    mobile = json['mobile'] ?? mobile;
     aboutUs = json['about_us'] ?? aboutUs;
     registerType = json['register_type'] ?? registerType;
     countryCode = json['country_code'] ?? countryCode;
@@ -108,6 +106,13 @@ class Data{
       saveUserDetail();
     }
   }
+
+  static Future<bool> isUserLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? storeUserDetails = prefs.getString(PreferenceKey.storeUser);
+    return storeUserDetails != null;
+  }
+
 
   Future<void> saveUserDetail() async {
     final userMap = toJson();
@@ -122,10 +127,16 @@ class Data{
     updateUserDetail(json.decode(storeUserDetails));
   }
 
-  Future resetUserDetail() async {
+  Future<void> resetUserDetail() async {
     id = null;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(PreferenceKey.storeUser);
+  }
+
+   static Future<Data> getUserDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userDetails = jsonDecode(prefs.getString(PreferenceKey.storeUser)?? "");
+    return Data.fromJson(userDetails);
   }
 
 }

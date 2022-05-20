@@ -4,6 +4,7 @@ import 'dart:io' show File;
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:keda_flutter/service/request/login_request.dart';
+import 'package:keda_flutter/service/response/forgot_password_response.dart';
 import 'package:keda_flutter/service/response/login_response.dart';
 import 'package:path/path.dart';
 import '../localization/localization.dart';
@@ -13,6 +14,7 @@ import '../utils/navigation/navigation_service.dart';
 import '../utils/routes.dart';
 import '../utils/utils.dart';
 import 'api_constant.dart';
+import 'base_response.dart';
 import 'reachability.dart';
 import 'package:mime/mime.dart';
 
@@ -222,11 +224,16 @@ class ApiProvider {
     return LoginResponse(status: response.status, message: response.errMessage, loginUserData: user);
   }
 
-  // //Forgot Password API
-  // Future<BaseResponse?> forgotPasswordApi(ForgotPasswordRequest params) async {
-  //   final HttpResponse response = await postRequest(ApiType.forgotPassword, params: params.toJson());
-  //   return BaseResponse(status: response.status, message: response.errMessage);
-  // }
+  //Forgot Password API
+  Future<ForgotPasswordResponse?> forgotPasswordApi(Map<String, dynamic> params) async {
+    final HttpResponse response = await postRequest(ApiType.forgotPassword, params: params);
+    Logger().v("Response Code in forgot Password API: === ${response.status} " );
+    ForgotPasswordResponse? forgotPasswordResponse;
+    if ((response.status == 200) && (response.json is Map)) {
+      forgotPasswordResponse = ForgotPasswordResponse.fromJson(response.json);
+    }
+    return ForgotPasswordResponse(status: response.status, message: response.errMessage, forgotPasswordData: forgotPasswordResponse?.forgotPasswordData);
+  }
   //
   // //Logout API
   // Future<BaseResponse> logoutApi() async {

@@ -11,7 +11,7 @@ class AppImage {
   static String personImage = '${AppImage._prefixPath}/temp_person.png';
   static String watch = '${AppImage._prefixPath}/watch.jpg';
   static String backArrow = '${AppImage._prefixPath}/ic_back.png';
-
-
+  static String splashSymbol = '${AppImage._prefixPath}/splash_symbol.png';
+  static String splashText = '${AppImage._prefixPath}/splash_text.png';
 
 }

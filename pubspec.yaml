@@ -80,7 +80,6 @@ dev_dependencies:
 
 
 
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -103,6 +102,8 @@ flutter:
    - assets/images/temp_person.png
    - assets/images/watch.jpg
    - assets/images/ic_back.png
+   - assets/images/splash_symbol.png
+   - assets/images/splash_text.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

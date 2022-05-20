@@ -50,10 +50,10 @@ class ProfileTabsScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             AboutMeTab(),
-            MyProductsTab()
+            const MyProductsTab()
           ],
         ),
       ),

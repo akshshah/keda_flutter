@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 2), () async {
+    Future.delayed(const Duration(seconds: 1), () async {
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
             if (widget.isUserLogin) {
@@ -49,12 +49,33 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: AppColor.colorPrimary
             ),
           ),
-          Positioned(
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Image.asset(AppImage.backArrow),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 150,
+                  width: 150,
+                  child: Image.asset(
+                      AppImage.splashSymbol,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: SizedBox(
+                    height: 40,
+                    width: 110,
+                    child: Image.asset(
+                        AppImage.splashText,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),

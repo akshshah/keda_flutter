@@ -11,12 +11,8 @@ import '../utils/navigation/navigation_service.dart';
 
 enum ApiType {
   login,
-  logout,
   forgotPassword,
   signUp,
-  changePassword,
-  updateProfile,
-  myProfile,
 }
 
 class PreferenceKey {
@@ -32,18 +28,10 @@ class ApiConstant {
     switch (type) {
       case ApiType.login:
         return 'user/login';
-      case ApiType.logout:
-        return '/api/logout';
-      case ApiType.changePassword:
-        return 'api/change-password';
       case ApiType.forgotPassword:
-        return 'api/forgot';
+        return 'user/forgotPassword';
       case ApiType.signUp:
-        return 'api/register';
-      case ApiType.updateProfile:
-        return 'api/update-profile';
-      case ApiType.myProfile:
-        return 'api/my-profile';
+        return 'user/add';
       default:
         return "";
     }

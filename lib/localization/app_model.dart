@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:keda_flutter/service/response/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/user.dart';
 import '../service/reachability.dart';
@@ -66,10 +67,10 @@ class AppModel with ChangeNotifier {
     // });
 
     /// User Login Status
-    // isUserLogin = await AppUser.isUserLogin();
-    // if (isUserLogin) {
-    //   AppUser.currentUser.loadUserDetails();
-    // }
+    isUserLogin = await Data.isUserLogin();
+    if (isUserLogin) {
+      Data.currentUser.loadUserDetails();
+    }
 
     isLoading = false;
     notifyListeners();

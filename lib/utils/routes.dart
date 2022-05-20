@@ -9,6 +9,6 @@ class RouteName {
 
 final Map<String, WidgetBuilder> appRoutes = {
   RegisterScreen.routeName : (BuildContext context) => const RegisterScreen(),
-  ForgotPasswordScreen.routeName : (BuildContext context) => const ForgotPasswordScreen(),
+  ForgotPasswordScreen.routeName : (BuildContext context) => ForgotPasswordScreen(),
   HomeScreen.routeName : (BuildContext context) => const HomeScreen(),
 };

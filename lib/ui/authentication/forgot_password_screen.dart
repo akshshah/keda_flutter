@@ -1,17 +1,47 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:keda_flutter/providers/login_screen_provider.dart';
 
 import '../../localization/localization.dart';
 import '../../ui/authentication/register_screen.dart';
 import '../../utils/app_color.dart';
+import '../../utils/logger.dart';
 import '../../utils/mixin/common_widget.dart';
 import '../../utils/styles.dart';
 import '../../utils/ui_text_style.dart';
+import 'package:provider/provider.dart';
+
+import '../../utils/utils.dart';
+
 
 class ForgotPasswordScreen extends StatelessWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  ForgotPasswordScreen({Key? key}) : super(key: key);
+
+  final TextEditingController _emailController = TextEditingController();
 
   static const routeName = '/forgot-password';
+
+  checkValidationAndApiCall(BuildContext context) {
+    FocusScope.of(context).unfocus();
+
+    final validationResult = Provider.of<LoginProvider>(context, listen: false).isValidForm2();
+    Logger().v("Result $validationResult");
+    if (!validationResult.item1) {
+      Utils.showSnackBarWithContext(context, validationResult.item2);
+      return;
+    }
+
+    Utils.showProgressDialog(context);
+    Provider.of<LoginProvider>(context, listen: false).forgotPasswordAPI().then((response) async {
+      await Utils.dismissProgressDialog(context);
+      if(response?.status == 204){
+        Utils.showSnackBarWithContext(context, "Incorrect email, phone or password. Please try again.");
+      }
+      else {
+        Utils.showSnackBarWithContext(context, response?.message?? "");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +72,16 @@ class ForgotPasswordScreen extends StatelessWidget {
                     height: 30,
                   ),
                   CommonWidget.createTextField(
-                      labelText: Translations.of(context).strEmailPhone
+                      labelText: Translations.of(context).strEmailPhone,
+                      controller: _emailController,
+                    action:TextInputAction.next,
+                    onChanged: Provider.of<LoginProvider>(context, listen: false).forgotFunction,
                   ),
                   const SizedBox(
                     height: 120,
                   ),
                   CommonWidget.myFullButton(Translations.of(context).btnSend,  () {
+                    checkValidationAndApiCall(context);
                   }),
                   const SizedBox(
                     height: 25,

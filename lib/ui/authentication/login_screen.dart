@@ -28,10 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   late LoginProvider loginProvider;
 
-  final FocusNode emailFocusNode = FocusNode();
-  final FocusNode passFocusNode = FocusNode();
-
-
   @override
   void dispose() {
     _emailController.dispose();

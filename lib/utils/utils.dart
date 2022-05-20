@@ -149,7 +149,7 @@ class Utils {
     final text = Text(
       message,
       style: UITextStyle.mediumTextStyle(
-        fontSize: 14,
+        fontSize: 16,
         color: AppColor.whiteColor,
       ),
     );
@@ -159,6 +159,7 @@ class Utils {
       backgroundColor: AppColor.colorPrimary,
       duration: Duration(seconds: duration),
       action: action,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
     );
 
     // Remove Current SnackBar if viewed
