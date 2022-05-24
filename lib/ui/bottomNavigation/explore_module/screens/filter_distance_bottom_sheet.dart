@@ -20,32 +20,55 @@ class FilterDistanceBottomSheet extends StatefulWidget {
 class _FilterDistanceBottomSheetState extends State<FilterDistanceBottomSheet> {
 
   DistanceEnum? _distanceRadio = DistanceEnum.none;
+  var distanceSelected = "";
+
 
   Widget getRadioWidget(String text, DistanceEnum distanceEnum) {
     return SizedBox(
+      width: double.infinity,
       height: 40,
-      child: ListTile(
-        title: Text(
-          text,
-          style: UITextStyle.semiBoldTextStyle(
-              fontSize: 16, color: AppColor.colorPrimary),
+      // child: ListTile(
+      //   title: Text(
+      //     text,
+      //     style: UITextStyle.semiBoldTextStyle(
+      //         fontSize: 16, color: AppColor.colorPrimary),
+      //   ),
+      //   trailing: Transform.scale(
+      //     scale: 1.1,
+      //     child: Radio(
+      //       value: distanceEnum,
+      //       groupValue: _distanceRadio,
+      //       onChanged: (DistanceEnum? value) {
+      //         setState(() {
+      //           _distanceRadio = value;
+      //           distanceSelected = text;
+      //         });
+      //       },
+      //       activeColor: AppColor.colorPrimary,
+      //       fillColor: MaterialStateColor.resolveWith(
+      //               (states) => AppColor.colorPrimary),
+      //     ),
+      //   ),
+      //   contentPadding: const EdgeInsets.only(left: 10),
+      //   onTap: (){
+      //
+      //   },
+      // ),
+      child: RadioListTile<DistanceEnum>(
+        title: Align(
+          alignment: Alignment.centerLeft,
+            child: Text(text, style: UITextStyle.semiBoldTextStyle(fontSize: 16, color: AppColor.colorPrimary,),),
         ),
-        trailing: Transform.scale(
-          scale: 1.1,
-          child: Radio(
-            value: distanceEnum,
-            groupValue: _distanceRadio,
-            onChanged: (DistanceEnum? value) {
-              setState(() {
-                _distanceRadio = value;
-              });
-            },
-            activeColor: AppColor.colorPrimary,
-            fillColor: MaterialStateColor.resolveWith(
-                    (states) => AppColor.colorPrimary),
-          ),
-        ),
-        contentPadding: const EdgeInsets.only(left: 10),
+        value: distanceEnum,
+        groupValue: _distanceRadio,
+        onChanged: (DistanceEnum? value) {
+          setState(() {
+            _distanceRadio = value;
+            distanceSelected = text;
+          });
+        },
+        activeColor: AppColor.colorPrimary,
+        controlAffinity: ListTileControlAffinity.trailing,
       ),
     );
   }
@@ -67,7 +90,7 @@ class _FilterDistanceBottomSheetState extends State<FilterDistanceBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(15, 16, 15, 5),
@@ -97,7 +120,9 @@ class _FilterDistanceBottomSheetState extends State<FilterDistanceBottomSheet> {
                     TextSpan(
                       text: "Done",
                       style: UITextStyle.semiBoldTextStyle(fontSize: 16),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      recognizer: TapGestureRecognizer()..onTap = () {
+                        Navigator.pop(context, distanceSelected);
+                      },
                     )
                   ]))
             ],

@@ -66,6 +66,7 @@ class Translations implements WidgetsLocalizations {
   String get btnConfirm => 'Confirm';
   String get btnUpdate => 'Update';
   String get btnSend => 'SEND';
+  String get btnLogout => 'LOGOUT';
 
   /* Login Page */
   String get strLogout => 'Logout';

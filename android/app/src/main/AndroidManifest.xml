@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.keda_flutter">
-   <application
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
         android:label="keda_flutter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
@@ -35,6 +40,9 @@
            android:name="io.flutter.embedding.android.SplashScreenDrawable"
            android:resource="@drawable/keda_splash_screen"
            />
+
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="@string/google_maps_key"/>
 
     </application>
 </manifest>

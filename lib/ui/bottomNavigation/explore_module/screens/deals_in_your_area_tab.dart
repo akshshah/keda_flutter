@@ -32,7 +32,7 @@ class AreaDealsTab extends StatelessWidget {
               maxCrossAxisExtent: 200,
               crossAxisSpacing: 0,
               mainAxisSpacing: 0,
-              childAspectRatio: 0.70
+              childAspectRatio: 0.74
           ),
           children: _myList.map((e) => DealItemWidget(dealItem: e)).toList(),
           shrinkWrap: true,

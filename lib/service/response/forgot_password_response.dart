@@ -1,4 +1,4 @@
-import 'package:keda_flutter/service/base_response.dart';
+import 'package:keda_flutter/service/response/base_response.dart';
 
 import 'login_response.dart';
 

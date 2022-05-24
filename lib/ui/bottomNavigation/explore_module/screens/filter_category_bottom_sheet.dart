@@ -36,29 +36,45 @@ class _FilterCategoryBottomSheetState extends State<FilterCategoryBottomSheet> {
   Widget getRadioWidget(String text, CategoryEnum categoryEnum) {
     return SizedBox(
       height: 40,
-      child: ListTile(
-        title: Text(
-          text,
-          style: UITextStyle.semiBoldTextStyle(
-              fontSize: 16, color: AppColor.colorPrimary),
+      // child: ListTile(
+      //   title: Text(
+      //     text,
+      //     style: UITextStyle.semiBoldTextStyle(
+      //         fontSize: 16, color: AppColor.colorPrimary),
+      //   ),
+      //   trailing: Transform.scale(
+      //     scale: 1.1,
+      //     child: Radio(
+      //       value: categoryEnum,
+      //       groupValue: _categoryRadio,
+      //       onChanged: (CategoryEnum? value) {
+      //         setState(() {
+      //           _categoryRadio = value;
+      //           categorySelected = text;
+      //         });
+      //       },
+      //       activeColor: AppColor.colorPrimary,
+      //       fillColor: MaterialStateColor.resolveWith(
+      //           (states) => AppColor.colorPrimary),
+      //     ),
+      //   ),
+      //   contentPadding: const EdgeInsets.only(left: 10),
+      // ),
+      child: RadioListTile<CategoryEnum>(
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(text, style: UITextStyle.semiBoldTextStyle(fontSize: 16, color: AppColor.colorPrimary,),),
         ),
-        trailing: Transform.scale(
-          scale: 1.1,
-          child: Radio(
-            value: categoryEnum,
-            groupValue: _categoryRadio,
-            onChanged: (CategoryEnum? value) {
-              setState(() {
-                _categoryRadio = value;
-                categorySelected = text;
-              });
-            },
-            activeColor: AppColor.colorPrimary,
-            fillColor: MaterialStateColor.resolveWith(
-                (states) => AppColor.colorPrimary),
-          ),
-        ),
-        contentPadding: const EdgeInsets.only(left: 10),
+        value: categoryEnum,
+        groupValue: _categoryRadio,
+        onChanged: (CategoryEnum? value) {
+          setState(() {
+            _categoryRadio = value;
+            categorySelected = text;
+          });
+        },
+        activeColor: AppColor.colorPrimary,
+        controlAffinity: ListTileControlAffinity.trailing,
       ),
     );
   }

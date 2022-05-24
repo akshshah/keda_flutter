@@ -28,6 +28,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   bool isPickup = false;
   bool isDelivered = false;
   var categorySelected =  "Choose Category";
+  var minDistanceSelected =  "0 Miles";
+  var maxDistanceSelected =  "10 Miles";
+  var typeSelected =  "Select Type";
 
   RatingEnum? _ratingRadio = RatingEnum.none;
 
@@ -54,7 +57,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             child: Text(
               text,
               style: UITextStyle.semiBoldTextStyle(
-                  color: AppColor.dividerColor),
+                  color: AppColor.dividerColor,
+              ),
             ),
           ),
         ],
@@ -93,7 +97,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   void _showCategoryBottomSheet(BuildContext ctx){
     Utils.customBottomSheet(context: ctx, sheetName:  "CategoryBottomSheet").then((value) {
-      Logger().v("Result Filter :: $value");
+      Logger().v("Result Category Filter :: $value");
       setState((){
         if(value != null && value != ""){
           categorySelected = value;
@@ -103,11 +107,51 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   }
 
   void _showMinDistanceBottomSheet(BuildContext ctx){
-    Utils.customBottomSheet(context: ctx, sheetName:  "MinDistanceBottomSheet");
+    Utils.customBottomSheet(context: ctx, sheetName:  "MinDistanceBottomSheet").then((value) {
+      Logger().v("Result Min Filter :: $value");
+      setState((){
+        if(value != null && value != ""){
+          minDistanceSelected = value;
+        }
+      });
+    });
   }
 
   void _showMaxDistanceBottomSheet(BuildContext ctx){
-    Utils.customBottomSheet(context: ctx, sheetName:  "MaxDistanceBottomSheet");
+    Utils.customBottomSheet(context: ctx, sheetName:  "MaxDistanceBottomSheet").then((value) {
+      Logger().v("Result Max Filter :: $value");
+      setState((){
+        if(value != null && value != ""){
+          maxDistanceSelected = value;
+        }
+      });
+    });
+  }
+
+  void _showTypeBottomSheet(BuildContext ctx){
+    Utils.customBottomSheet(context: ctx, sheetName:  "TypeBottomSheet").then((value) {
+      Logger().v("Result Type Filter :: $value");
+      setState((){
+        if(value != null && value != ""){
+          typeSelected = value;
+        }
+      });
+    });
+  }
+
+  void _resetFilter(){
+    setState((){
+      categorySelected =  "Choose Category";
+      minDistanceSelected =  "0 Miles";
+      maxDistanceSelected =  "10 Miles";
+      typeSelected =  "Select Type";
+      _ratingRadio = RatingEnum.none;
+      _currentRangeValues = const RangeValues(0, 80);
+      isEither = false;
+      isPickup = false;
+      isDelivered = false;
+      deliveryType = "";
+    });
   }
 
   @override
@@ -143,7 +187,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 TextSpan(
                   text: "Reset",
                   style: UITextStyle.semiBoldTextStyle(fontSize: 16),
-                  recognizer: TapGestureRecognizer()..onTap = () {},
+                  recognizer: TapGestureRecognizer()..onTap = () {
+                    _resetFilter();
+                  },
                 )
               ]))
             ],
@@ -242,7 +288,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "0 Miles",
+                                            minDistanceSelected,
                                             style: UITextStyle.semiBoldTextStyle(
                                                 color: AppColor.colorPrimary,
                                                 fontSize: 16),
@@ -285,7 +331,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "10 Miles",
+                                            maxDistanceSelected,
                                             style: UITextStyle.semiBoldTextStyle(
                                                 color: AppColor.colorPrimary,
                                                 fontSize: 16),
@@ -382,7 +428,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                                   onTap: () {},
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 7, vertical: 7),
+                                        horizontal: 7, vertical: 5),
                                     decoration: customBoxDecoration(),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -659,7 +705,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                         height: 8,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          _showTypeBottomSheet(context);
+                        },
                         child: Padding(
                           padding:
                           const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
@@ -667,7 +715,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  "Select Type",
+                                  typeSelected,
                                   style: UITextStyle.semiBoldTextStyle(
                                       color: AppColor.colorPrimary, fontSize: 16),
                                 ),
@@ -707,7 +755,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }

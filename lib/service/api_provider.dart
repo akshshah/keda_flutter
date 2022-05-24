@@ -6,6 +6,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:keda_flutter/service/request/login_request.dart';
 import 'package:keda_flutter/service/response/forgot_password_response.dart';
 import 'package:keda_flutter/service/response/login_response.dart';
+import 'package:keda_flutter/ui/authentication/login_screen.dart';
 import 'package:path/path.dart';
 import '../localization/localization.dart';
 import '../model/user.dart';
@@ -14,7 +15,7 @@ import '../utils/navigation/navigation_service.dart';
 import '../utils/routes.dart';
 import '../utils/utils.dart';
 import 'api_constant.dart';
-import 'base_response.dart';
+import 'response/base_response.dart';
 import 'reachability.dart';
 import 'package:mime/mime.dart';
 
@@ -60,7 +61,7 @@ class ApiProvider {
       barrierDismissible: false,
       callback: (index) async {
         await Data.currentUser.resetUserDetail();
-        NavigationService().navigateRemoveAndUntilNamed(RouteName.login);
+        NavigationService().navigateRemoveAndUntilNamed(LoginScreen.routeName);
       },
     );
   }
@@ -236,10 +237,11 @@ class ApiProvider {
   }
   //
   // //Logout API
-  // Future<BaseResponse> logoutApi() async {
-  //   final HttpResponse response = await postRequest(ApiType.logout);
-  //   return BaseResponse(status: response.status, message: response.errMessage);
-  // }
+  Future<BaseResponse> logoutApi(Map<String, dynamic> params) async {
+    final HttpResponse response = await postRequest(ApiType.logout, params: params);
+    Logger().v("Response Code in logout API: === ${response.status} " );
+    return BaseResponse(status: response.status, message: response.errMessage);
+  }
   //
   // //Signup API
   // Future<SignUpResponse?> signUpApi(SignUpRequest params) async {

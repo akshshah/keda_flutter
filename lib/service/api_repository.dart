@@ -4,7 +4,7 @@ import 'package:keda_flutter/service/response/forgot_password_response.dart';
 import 'package:keda_flutter/service/response/login_response.dart';
 
 import 'api_provider.dart';
-import 'base_response.dart';
+import 'response/base_response.dart';
 
 class AppRepository {
   final apiProvider = ApiProvider();
@@ -14,8 +14,8 @@ class AppRepository {
   // Login Api
   Future<LoginResponse> loginApi(LoginRequest params) => apiProvider.loginApi(params);
   //
-  // //Logout Api
-  // Future<BaseResponse> logoutApi() => apiProvider.logoutApi();
+  //Logout Api
+  Future<BaseResponse> logoutApi(Map<String, dynamic> params) => apiProvider.logoutApi(params);
   //
   // //Signup Api
   // Future<SignUpResponse?> signUpApi(SignUpRequest params) => apiProvider.signUpApi(params);

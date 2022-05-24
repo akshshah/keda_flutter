@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:keda_flutter/service/response/login_response.dart';
 import 'package:keda_flutter/ui/bottomNavigation/profileModule/screens/profile_tabs_screen.dart';
+import 'package:keda_flutter/ui/bottomNavigation/profileModule/screens/settings_screen.dart';
 import 'package:keda_flutter/utils/app_color.dart';
 import 'package:keda_flutter/utils/app_image.dart';
 import 'package:keda_flutter/utils/utils.dart';
@@ -66,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                print("pressed");
+                                Navigator.of(context).pushNamed(SettingsScreen.routeName);
                               },
                               child: const Icon(Icons.settings, color: Colors.white,),
                             )

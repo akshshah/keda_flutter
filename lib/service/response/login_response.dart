@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:keda_flutter/service/base_response.dart';
+import 'package:keda_flutter/service/response/base_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api_constant.dart';

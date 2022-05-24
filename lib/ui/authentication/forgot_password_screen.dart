@@ -97,7 +97,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                         style: UITextStyle.boldTextStyle(color: AppColor.colorPrimary),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.of(context).pushNamed(RegisterScreen.routeName);
+                            Navigator.of(context).pushReplacementNamed(RegisterScreen.routeName);
                           },
                       ),
                     ]),

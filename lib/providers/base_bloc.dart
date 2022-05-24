@@ -11,7 +11,7 @@ class BaseBloc extends Object {
   bool isApiCallDone = false;
 
   String getValue(BehaviorSubject<String> subject) {
-    if(subject.hasValue) return subject.value;
+    if(subject.hasValue) return subject.value ?? "";
     return '';
   }
 

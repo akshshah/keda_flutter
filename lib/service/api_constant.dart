@@ -13,6 +13,7 @@ enum ApiType {
   login,
   forgotPassword,
   signUp,
+  logout,
 }
 
 class PreferenceKey {
@@ -32,6 +33,8 @@ class ApiConstant {
         return 'user/forgotPassword';
       case ApiType.signUp:
         return 'user/add';
+      case ApiType.logout:
+        return 'user/logout';
       default:
         return "";
     }
@@ -54,7 +57,7 @@ class ApiConstant {
     Map<String, String> headers = <String, String>{};
 
     AppModel appModel = Provider.of<AppModel>(NavigationService().context, listen: false);
-    headers['language'] = appModel.appLocal.apiLanguageCode;
+    // headers['language'] = appModel.appLocal.apiLanguageCode;
 
     if (type == ApiType.login || type == ApiType.signUp) {
       // paramsFinal['deviceType'] = DeviceUtil().deviceType;
@@ -63,7 +66,7 @@ class ApiConstant {
     }
 
     if ((Data.currentUser.accessToken != null) && Data.currentUser.accessToken!.isNotEmpty) {
-      headers['Authorization'] = Data.currentUser.accessToken!;
+      headers['api-key'] = Data.currentUser.accessToken!;
     }
 
     Logger().d("Request Start Time :: ${DateTime.now()}");

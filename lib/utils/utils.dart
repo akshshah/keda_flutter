@@ -6,6 +6,7 @@ import 'package:keda_flutter/control/progress_dialog.dart';
 import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/filter_bottom_sheet.dart';
 import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/filter_category_bottom_sheet.dart';
 import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/filter_distance_bottom_sheet.dart';
+import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/filter_type_bottom_sheet.dart';
 import 'package:keda_flutter/utils/ui_text_style.dart';
 import '../control/alert_widget.dart';
 import 'app_color.dart';
@@ -342,6 +343,8 @@ class Utils {
                     return FilterDistanceBottomSheet(scrollController: controller, distanceType: "Min",);
                   case "MaxDistanceBottomSheet":
                     return FilterDistanceBottomSheet(scrollController: controller, distanceType: "Max",);
+                  case "TypeBottomSheet":
+                    return FilterTypeBottomSheet(scrollController: controller,);
                   default:
                     return SizedBox();
                 }

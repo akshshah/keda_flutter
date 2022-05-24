@@ -20,15 +20,15 @@ class PlatformChannel {
   PlatformChannel._internal();
 
 
-  // Future testMethod() async {
-  //   try {
-  //     final String result = await _platform.invokeMethod('test');
-  //     Logger().e("Result :: $result");
-  //     return;
-  //   } on PlatformException catch (e) {
-  //     Logger().e("Exception :: ${e.message}");
-  //   }
-  // }
+  Future testMethod() async {
+    try {
+      final String result = await _platform.invokeMethod('test');
+      Logger().e("Result :: $result");
+      return;
+    } on PlatformException catch (e) {
+      Logger().e("Exception :: ${e.message}");
+    }
+  }
 
   //region clearNotification
   Future clearNotification() async {

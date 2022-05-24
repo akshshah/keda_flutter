@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:keda_flutter/providers/base_bloc.dart';
-import 'package:keda_flutter/service/base_response.dart';
 import 'package:keda_flutter/service/response/forgot_password_response.dart';
 import 'package:keda_flutter/utils/logger.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,8 +24,8 @@ class LoginProvider extends BaseBloc with ChangeNotifier {
 
   Tuple2<bool, String> isValidForm() {
     List<Tuple2<ValidationType, String>> arrList = [];
-    arrList.add(Tuple2(ValidationType.email, _emailBehaviorSubject.hasValue ? _emailBehaviorSubject.value : ''));
-    arrList.add(Tuple2(ValidationType.password, _passwordBehaviorSubject.hasValue ? _passwordBehaviorSubject.value : ''));
+    arrList.add(Tuple2(ValidationType.email, _emailBehaviorSubject.value ?? ''));
+    arrList.add(Tuple2(ValidationType.password, _passwordBehaviorSubject.value ?? ''));
 
     final validationResult = Validation().checkValidationForTextFieldWithType(arrList);
     return Tuple2(validationResult.item1, validationResult.item2);
@@ -47,7 +46,7 @@ class LoginProvider extends BaseBloc with ChangeNotifier {
 
   Tuple2<bool, String> isValidForm2() {
     List<Tuple2<ValidationType, String>> arrList = [];
-    arrList.add(Tuple2(ValidationType.email, _forgetEmailBehaviorSubject.hasValue ? _forgetEmailBehaviorSubject.value : ''));
+    arrList.add(Tuple2(ValidationType.email, _forgetEmailBehaviorSubject.value ?? ""));
 
     final validationResult = Validation().checkValidationForTextFieldWithType(arrList);
     return Tuple2(validationResult.item1, validationResult.item2);

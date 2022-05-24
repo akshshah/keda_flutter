@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keda_flutter/providers/login_screen_provider.dart';
+import 'package:keda_flutter/providers/settings_screen_provider.dart';
 import 'package:keda_flutter/utils/app_font.dart';
+import 'package:keda_flutter/utils/ui_text_style.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +31,7 @@ class ApplicationWrapper extends StatelessWidget {
             providers: [
               Provider<BaseBloc>.value(value: BaseBloc()),
               ChangeNotifierProvider(create: (ctx) => LoginProvider()),
+              ChangeNotifierProvider(create: (ctx) => SettingsProvider()),
             ],
             child: ScreenUtilInit(
               designSize: const Size(375, 812),
@@ -56,10 +59,12 @@ class ApplicationWrapper extends StatelessWidget {
                       primaryColor: AppColor.colorPrimary,
                       primaryColorDark: AppColor.colorPrimaryDark,
                       fontFamily: AppFont.fontRegular,
-                      appBarTheme: const AppBarTheme(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0.0,
-                          foregroundColor: AppColor.colorPrimaryDark),
+                      appBarTheme: AppBarTheme(
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                        titleTextStyle: UITextStyle.boldTextStyle(fontSize: 18),
+                        foregroundColor: AppColor.heading_text,
+                      ),
                     ),
                     home: SplashScreen(isUserLogin: value.isUserLogin),
                     routes: appRoutes,
