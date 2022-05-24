@@ -20,7 +20,7 @@ import 'package:google_maps_webservice/places.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/ui_text_style.dart';
 
-const kGoogleApiKey = "AIzaSyArUb_knFUpQu2xGRXgt974tW2eXATwV1w";
+const kGoogleApiKey = "API-KEY";
 
 class AddAddressScreen extends StatefulWidget {
   const AddAddressScreen({Key? key}) : super(key: key);
