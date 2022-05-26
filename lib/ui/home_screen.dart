@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     _widgetOptions = [
       {'page': const ExploreScreen() },
-      {'page': const SavedScreen() },
+      {'page': SavedScreen() },
       {'page': ProfileScreen() },
       {'page': const InboxScreen() },
       {'page': const RentalScreen() },

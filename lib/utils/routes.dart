@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keda_flutter/ui/authentication/login_screen.dart';
 import 'package:keda_flutter/ui/bottomNavigation/profileModule/screens/settings_screen.dart';
-import 'package:keda_flutter/ui/bottomNavigation/settingsModule/screens/TestScreen.dart';
 import 'package:keda_flutter/ui/bottomNavigation/settingsModule/screens/add_address_screen.dart';
 import 'package:keda_flutter/ui/bottomNavigation/settingsModule/screens/my_address_screen.dart';
 import '../ui/authentication/forgot_password_screen.dart';
@@ -20,5 +19,4 @@ final Map<String, WidgetBuilder> appRoutes = {
   SettingsScreen.routeName : (BuildContext context) => const SettingsScreen(),
   MyAddressScreen.routeName : (BuildContext context) => const MyAddressScreen(),
   AddAddressScreen.routeName : (BuildContext context) => const AddAddressScreen(),
-  MyApp.routeName : (BuildContext context) => MyApp(),
 };

@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 1), () async {
+    Future.delayed( const Duration(seconds: 1), () async {
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
             if (widget.isUserLogin) {
@@ -43,6 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       key: _scaffoldKey,
       body: Stack(
+        alignment: Alignment.center,
         children: [
           Container(
             decoration: const BoxDecoration(

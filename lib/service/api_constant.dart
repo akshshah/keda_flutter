@@ -14,6 +14,9 @@ enum ApiType {
   forgotPassword,
   signUp,
   logout,
+  fetchSavedProduct,
+  fetchRecommendProduct,
+  fetchRecentProduct,
 }
 
 class PreferenceKey {
@@ -22,7 +25,7 @@ class PreferenceKey {
 
 class ApiConstant {
 
-  static String get baseDomain => "https://keda-webapi.api.openxcell.dev/api/";
+  static String get baseDomain => "https://kedaweb-api.apps.openxcell.dev/api/";
   static String googlePlacesKey = '';
 
   static String getValue(ApiType type) {
@@ -35,6 +38,12 @@ class ApiConstant {
         return 'user/add';
       case ApiType.logout:
         return 'user/logout';
+      case ApiType.fetchSavedProduct:
+        return 'product/favourite/fetch';
+      case ApiType.fetchRecommendProduct:
+        return 'product/getRecommendedProduct';
+      case ApiType.fetchRecentProduct:
+        return 'product/fetchRecentSearch';
       default:
         return "";
     }

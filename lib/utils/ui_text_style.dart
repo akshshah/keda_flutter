@@ -14,7 +14,8 @@ class UITextStyle extends Object {
       double? letterSpacing,
       double? wordSpacing,
       double? lineSpacing,
-      TextDecoration? decoration}) {
+      TextDecoration? decoration,
+      TextOverflow? overflow = TextOverflow.ellipsis,}) {
     double finalFontSize = (fontSize ?? 14).toDouble();
     if (isFixed) {
       finalFontSize = finalFontSize.sp;
@@ -28,7 +29,8 @@ class UITextStyle extends Object {
         wordSpacing: wordSpacing,
         height: lineSpacing,
         fontWeight: fontWeight,
-        decoration: decoration,);
+        decoration: decoration,
+        overflow: overflow);
   }
 
   static boldTextStyle(
@@ -37,7 +39,8 @@ class UITextStyle extends Object {
       double? letterSpacing,
       double? wordSpacing,
       double? lineSpacing,
-      TextDecoration? decoration}) {
+      TextDecoration? decoration,
+      TextOverflow? overflow}) {
     return getTextStyle(
       fontFamily: AppFont.fontBold,
       fontSize: fontSize ?? 14,
@@ -46,6 +49,7 @@ class UITextStyle extends Object {
       wordSpacing: wordSpacing,
       lineSpacing: lineSpacing,
       decoration: decoration,
+      overflow: overflow,
     );
   }
 
@@ -55,7 +59,8 @@ class UITextStyle extends Object {
       double? letterSpacing,
       double? wordSpacing,
       double? lineSpacing,
-      TextDecoration? decoration}) {
+      TextDecoration? decoration,
+      TextOverflow? overflow}) {
     return getTextStyle(
       fontFamily: AppFont.fontSemiBold,
       fontSize: fontSize ?? 14,
@@ -64,6 +69,7 @@ class UITextStyle extends Object {
       wordSpacing: wordSpacing,
       lineSpacing: lineSpacing,
       decoration: decoration,
+      overflow: overflow,
     );
   }
 
@@ -73,7 +79,8 @@ class UITextStyle extends Object {
       double? letterSpacing,
       double? wordSpacing,
       double? lineSpacing,
-      TextDecoration? decoration}) {
+      TextDecoration? decoration,
+      TextOverflow? overflow}) {
     return getTextStyle(
       fontFamily: AppFont.fontSemiBoldItalic,
       fontSize: fontSize ?? 14,
@@ -82,6 +89,7 @@ class UITextStyle extends Object {
       wordSpacing: wordSpacing,
       lineSpacing: lineSpacing,
       decoration: decoration,
+      overflow: overflow,
     );
   }
 
@@ -91,7 +99,8 @@ class UITextStyle extends Object {
       double? letterSpacing,
       double? wordSpacing,
       double? lineSpacing,
-      TextDecoration? decoration}) {
+      TextDecoration? decoration,
+        TextOverflow? overflow,}) {
     return getTextStyle(
       fontFamily: AppFont.fontMedium,
       fontSize: fontSize ?? 14,
@@ -100,6 +109,7 @@ class UITextStyle extends Object {
       wordSpacing: wordSpacing,
       lineSpacing: lineSpacing,
       decoration: decoration,
+      overflow: overflow
     );
   }
 
@@ -109,7 +119,8 @@ class UITextStyle extends Object {
       double? letterSpacing,
       double? wordSpacing,
       double? lineSpacing,
-      TextDecoration? decoration}) {
+      TextDecoration? decoration,
+        TextOverflow? overflow,}) {
     return getTextStyle(
       fontFamily: AppFont.fontRegular,
       fontSize: fontSize ?? 14,
@@ -118,6 +129,7 @@ class UITextStyle extends Object {
       wordSpacing: wordSpacing,
       lineSpacing: lineSpacing,
       decoration: decoration,
+      overflow: overflow
     );
   }
 
@@ -127,7 +139,8 @@ class UITextStyle extends Object {
       double? letterSpacing,
       double? wordSpacing,
       double? lineSpacing,
-      TextDecoration? decoration}) {
+      TextDecoration? decoration,
+        TextOverflow? overflow}) {
     return getTextStyle(
       fontFamily: AppFont.fontLight,
       fontSize: fontSize ?? 14,
@@ -136,6 +149,7 @@ class UITextStyle extends Object {
       wordSpacing: wordSpacing,
       lineSpacing: lineSpacing,
       decoration: decoration,
+      overflow: overflow
     );
   }
 }

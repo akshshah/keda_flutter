@@ -5,7 +5,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:icofont_flutter/icofont_flutter.dart';
-import 'package:keda_flutter/ui/bottomNavigation/settingsModule/screens/TestScreen.dart';
 import 'package:keda_flutter/utils/channel/platform_channel.dart';
 import 'package:keda_flutter/utils/logger.dart';
 import 'package:keda_flutter/utils/mixin/common_widget.dart';
@@ -120,10 +119,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           ),
         ),
       ),
-      components: [Component(Component.country, "us")],
+      components: [Component(Component.country, "us"), Component(Component.country, "in")],
       strictbounds: false,
     );
-
     displayPrediction(p);
   }
 
@@ -146,6 +144,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       final lng = detail.result.geometry?.location.lng;
 
       if(lat != null && lng != null){
+        FocusScope.of(context).unfocus();
         final GoogleMapController controller = await _controller.future;
         CameraPosition _currentPosition = CameraPosition(target: LatLng(lat, lng), zoom: 18,);
         controller.animateCamera(CameraUpdate.newCameraPosition(_currentPosition));
@@ -360,18 +359,18 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                     },
                                     style: TextButton.styleFrom(
                                       shape: RoundedRectangleBorder(
-                                          side: BorderSide(color: isHome ? AppColor.heading_text : AppColor.heading_text_50),
+                                          side: BorderSide(color: isHome ? AppColor.colorPrimary : AppColor.tab_unselected, width: 2),
                                           borderRadius: BorderRadius.circular(10)
                                       ),
                                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                     ),
-                                    icon: Icon(Icons.home_outlined, color: isHome ? AppColor.heading_text : AppColor.heading_text_50),
-                                    label: Text("Home", style: UITextStyle.regularTextStyle(color: isHome ? AppColor.heading_text : AppColor.heading_text_50),),
+                                    icon: Icon(Icons.home_outlined, color: isHome ? AppColor.colorPrimary : AppColor.tab_unselected),
+                                    label: Text("Home", style: UITextStyle.regularTextStyle(color: isHome ? AppColor.colorPrimary : AppColor.tab_unselected),),
                                   ),
                                   TextButton.icon(
                                     style: TextButton.styleFrom(
                                       shape: RoundedRectangleBorder(
-                                          side: BorderSide(color: isWork ? AppColor.heading_text : AppColor.heading_text_50),
+                                          side: BorderSide(color: isWork ? AppColor.colorPrimary : AppColor.tab_unselected, width: 2),
                                           borderRadius: BorderRadius.circular(10)
                                       ),
                                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -383,8 +382,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                         isOther = false;
                                       });
                                     },
-                                    icon: Icon(Icons.work_outline_rounded, color: isWork ? AppColor.heading_text : AppColor.heading_text_50),
-                                    label: Text("Work", style: UITextStyle.regularTextStyle(color: isWork ? AppColor.heading_text : AppColor.heading_text_50),),
+                                    icon: Icon(Icons.work_outline_rounded, color: isWork ? AppColor.colorPrimary : AppColor.tab_unselected),
+                                    label: Text("Work", style: UITextStyle.regularTextStyle(color: isWork ? AppColor.colorPrimary : AppColor.tab_unselected),),
                                   ),
                                   TextButton.icon(
                                     onPressed: () {
@@ -396,13 +395,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                     },
                                     style: TextButton.styleFrom(
                                       shape: RoundedRectangleBorder(
-                                          side: BorderSide(color: isOther ? AppColor.heading_text : AppColor.heading_text_50),
+                                          side: BorderSide(color: isOther ? AppColor.colorPrimary : AppColor.tab_unselected, width: 2),
                                           borderRadius: BorderRadius.circular(10)
                                       ),
                                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                     ),
-                                    icon: Icon(Icons.pin_drop_outlined, color: isOther ? AppColor.heading_text : AppColor.heading_text_50),
-                                    label: Text("Other", style: UITextStyle.regularTextStyle(color: isOther ? AppColor.heading_text : AppColor.heading_text_50),),
+                                    icon: Icon(Icons.pin_drop_outlined, color: isOther ? AppColor.colorPrimary : AppColor.tab_unselected),
+                                    label: Text("Other", style: UITextStyle.regularTextStyle(color: isOther ? AppColor.colorPrimary : AppColor.tab_unselected),),
                                   ),
                                 ],
                               ),

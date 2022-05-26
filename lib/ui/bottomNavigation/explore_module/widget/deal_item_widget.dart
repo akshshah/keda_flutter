@@ -3,8 +3,8 @@ import 'package:keda_flutter/utils/app_color.dart';
 
 import '../models/DealItem.dart';
 
-class DealItemWidget extends StatelessWidget {
-  const DealItemWidget({Key? key, required this.dealItem}) : super(key: key);
+class ProductItemWidget extends StatelessWidget {
+  const ProductItemWidget({Key? key, required this.dealItem}) : super(key: key);
 
   final DealItem dealItem;
 

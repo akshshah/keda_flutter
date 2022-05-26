@@ -1,43 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:keda_flutter/providers/explore_screen_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-import '../models/DealItem.dart';
-import '../widget/deal_item_widget.dart';
+import '../../../../utils/app_color.dart';
+import '../../../../utils/channel/platform_channel.dart';
+import '../../../../utils/logger.dart';
+import '../../../../utils/utils.dart';
+import '../widget/grid_product_widget.dart';
 
+class AreaDealsTab extends StatefulWidget {
+  AreaDealsTab({Key? key}) : super(key: key);
 
-class AreaDealsTab extends StatelessWidget {
-  const AreaDealsTab({Key? key}) : super(key: key);
+  @override
+  State<AreaDealsTab> createState() => _AreaDealsTabState();
+}
 
-  Future<void> _refreshProducts(BuildContext context) async{
-    try {
-    } catch (e) {
-
-    }
-  }
-
-  final List<DealItem> _myList = const [
-    DealItem(id: "1", name: "Item 1", category: "Clothes", price: "15.00",type: 1),
-    DealItem(id: "2", name: "Item 2", category: "General", price: "10.00",type: 2),
-    DealItem(id: "3", name: "Item 3", category: "Furniture", price: "20.00",type: 3),
-    DealItem(id: "4", name: "Item 4", category: "Food", price: "5.00",type: 1),
-    DealItem(id: "5", name: "Item 5", category: "Furniture", price: "20.00",type: 1),
-    DealItem(id: "6", name: "Item 6", category: "Food", price: "5.00",type: 3),
-  ];
+class _AreaDealsTabState extends State<AreaDealsTab> with AutomaticKeepAliveClientMixin{
+  final _scrollController = ScrollController();
+  int totalProducts = 0;
+  final Permission _permission = Permission.location;
 
 
   @override
+  void initState() {
+    _scrollController.addListener(pagination);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> callRecommendedProductsAPI({required BuildContext context, bool? isPagination = false, bool? refresh = false}) async {
+
+    var ans = await PlatformChannel().checkForPermission(_permission);
+    if(ans == false) {
+      Utils.showSnackBarWithContext(context, "Location permission denied");
+      return;
+    }
+
+    final response = await Provider.of<ExploreProvider>(context, listen: false).fetchRecommendedProductsAPI(isPagination: isPagination, refresh: refresh);
+    Logger().v("Response Code : === ${response?.status} ");
+    if (response?.status == 200) {
+      totalProducts = response?.totalRecords ?? 0;
+    } else {
+      Utils.showSnackBarWithContext(context, response?.message ?? "");
+    }
+
+  }
+
+  void pagination() {
+    if ((_scrollController.position.pixels == _scrollController.position.maxScrollExtent) && (Provider.of<ExploreProvider>(context, listen: false).recommendedProducts.length < totalProducts)) {
+      callRecommendedProductsAPI(context: context, isPagination: true);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-        child: GridView(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
-              childAspectRatio: 0.74
+    return FutureBuilder(
+      future: callRecommendedProductsAPI(context: context, refresh: true),
+      builder: (ctx, snapshot) => snapshot.connectionState ==
+              ConnectionState.waiting
+          ? const Center(
+            child: CircularProgressIndicator(
+              color: AppColor.colorPrimary,
+            ),
+          )
+          : RefreshIndicator(
+            onRefresh: () => callRecommendedProductsAPI(context: context, refresh: true),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child:  Consumer<ExploreProvider> (
+                builder: (ctx, exploreData, child) {
+                  return StaggeredGrid.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 0,
+                    mainAxisSpacing: 0,
+                    children: exploreData.recommendedProducts.map((e) => GridProductWidget(product: e, isRecent: false,)).toList(),
+                  );
+                },
+              ),
+            ),
           ),
-          children: _myList.map((e) => DealItemWidget(dealItem: e)).toList(),
-          shrinkWrap: true,
-        ),
-        onRefresh: () => _refreshProducts(context)
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

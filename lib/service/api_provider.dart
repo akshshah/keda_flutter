@@ -6,6 +6,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:keda_flutter/service/request/login_request.dart';
 import 'package:keda_flutter/service/response/forgot_password_response.dart';
 import 'package:keda_flutter/service/response/login_response.dart';
+import 'package:keda_flutter/service/response/products_response.dart';
 import 'package:keda_flutter/ui/authentication/login_screen.dart';
 import 'package:path/path.dart';
 import '../localization/localization.dart';
@@ -24,8 +25,9 @@ class HttpResponse {
   String? errMessage = "";
   dynamic json;
   bool failDueToToken;
+  int? totalRecords;
 
-  HttpResponse({required this.status, required this.errMessage, this.json, this.failDueToToken = false});
+  HttpResponse({required this.status, required this.errMessage, this.json, this.failDueToToken = false, this.totalRecords});
 }
 
 class ResponseKeys {
@@ -33,6 +35,7 @@ class ResponseKeys {
   static String kStatus = 'status';
   static String kId = 'id';
   static String kData = 'data';
+  static String totalRecords = 'total_records';
 }
 
 class ApiProvider {
@@ -104,11 +107,12 @@ class ApiProvider {
     final message = jsonResponse[ResponseKeys.kMessage] ?? '';
     final status = jsonResponse[ResponseKeys.kStatus] ?? response.statusCode;
     final data = jsonResponse[ResponseKeys.kData] ?? "";
+    final totalRecords = jsonResponse[ResponseKeys.totalRecords] ?? 0;
     if ((response.statusCode ?? 0) >= 200 && (response.statusCode ?? 0) < 299) {
-      return HttpResponse(status: status, errMessage: message, json: data);
+      return HttpResponse(status: status, errMessage: message, json: data, totalRecords: totalRecords);
     } else {
       var errMessage = jsonResponse[ResponseKeys.kMessage];
-      return HttpResponse(status: status, errMessage: errMessage, json: jsonResponse);
+      return HttpResponse(status: status, errMessage: errMessage, json: jsonResponse, totalRecords: totalRecords);
     }
   }
 
@@ -235,50 +239,32 @@ class ApiProvider {
     }
     return ForgotPasswordResponse(status: response.status, message: response.errMessage, forgotPasswordData: forgotPasswordResponse?.forgotPasswordData);
   }
-  //
-  // //Logout API
+
+  //Logout API
   Future<BaseResponse> logoutApi(Map<String, dynamic> params) async {
     final HttpResponse response = await postRequest(ApiType.logout, params: params);
     Logger().v("Response Code in logout API: === ${response.status} " );
     return BaseResponse(status: response.status, message: response.errMessage);
   }
-  //
-  // //Signup API
-  // Future<SignUpResponse?> signUpApi(SignUpRequest params) async {
-  //   final HttpResponse response = await postRequest(ApiType.signUp, params: params.toJson());
-  //   AppUser? user;
-  //   if ((response.status == 200) && (response.json is Map)) {
-  //     user = AppUser.currentUser;
-  //     user.updateUserDetail(response.json);
-  //     await user.saveUserDetail();
-  //   }
-  //   return SignUpResponse(status: response.status, message: response.errMessage, data: user);
-  // }
-  //
-  // //Change Password Api
-  // Future<BaseResponse> changePasswordApi(ChangePasswordRequest params) async {
-  //   final HttpResponse response = await postRequest(ApiType.changePassword, params: params.toJson());
-  //   return BaseResponse(status: response.status, message: response.errMessage);
-  // }
-  //
-  // //Update Profile API
-  // Future<BaseResponse> updateProfileApi(UpdateProfileRequest params) async {
-  //   final HttpResponse response = await uploadRequest(ApiType.updateProfile,arrFile: params.files, params: params.toJson());
-  //   if ((response.status == 200) && (response.json is Map)) {
-  //     return BaseResponse(status: response.status,message: response.errMessage);
-  //   }
-  //   return BaseResponse(status: response.status,message: response.errMessage);
-  // }
-  //
-  // //My Profile API
-  // Future<LoginResponse> myProfileApi(MyProfileRequest params) async {
-  //   final HttpResponse response = await postRequest(ApiType.myProfile, params: params.toJson());
-  //   AppUser? user;
-  //   if ((response.status == 200) && (response.json is Map)) {
-  //     user = AppUser.currentUser;
-  //     user.updateUserDetail(response.json);
-  //     await user.saveUserDetail();
-  //   }
-  //   return LoginResponse(status: response.status, message: response.errMessage, loginUserData: user);
-  // }
+
+  //Fetched Saved Products API
+  Future<ProductsResponse> fetchSavedProducts(Map<String, dynamic> params) async {
+    final HttpResponse response = await postRequest(ApiType.fetchSavedProduct, params: params);
+    Logger().v("Response Code in fetch Saved API: === ${response.status} " );
+    return ProductsResponse(status: response.status, message: response.errMessage, data: response.json, totalRecords: response.totalRecords);
+  }
+
+  //Fetched Recommended Products API
+  Future<ProductsResponse> fetchRecommendedProducts(Map<String, dynamic> params) async {
+    final HttpResponse response = await postRequest(ApiType.fetchRecommendProduct, params: params);
+    Logger().v("Response Code in fetch Recommended API: === ${response.status} " );
+    return ProductsResponse(status: response.status, message: response.errMessage, data: response.json, totalRecords: response.totalRecords);
+  }
+
+  //Fetched Recent Search Products API
+  Future<ProductsResponse> fetchRecentProducts(Map<String, dynamic> params) async {
+    final HttpResponse response = await postRequest(ApiType.fetchRecentProduct, params: params);
+    Logger().v("Response Code in fetch Recent API: === ${response.status} " );
+    return ProductsResponse(status: response.status, message: response.errMessage, data: response.json, totalRecords: response.totalRecords);
+  }
 }

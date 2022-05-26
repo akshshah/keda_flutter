@@ -160,7 +160,7 @@ class Utils {
       backgroundColor: AppColor.colorPrimary,
       duration: Duration(seconds: duration),
       action: action,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
     );
 
     // Remove Current SnackBar if viewed

@@ -52,7 +52,7 @@ class ExploreTabsScreen extends StatelessWidget {
               ),
             ),
           ),
-          body: const TabBarView(
+          body: TabBarView(
             children: [
               AreaDealsTab(),
               RecentSearchTab()
