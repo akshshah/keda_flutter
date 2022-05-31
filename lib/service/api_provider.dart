@@ -3,14 +3,18 @@ import 'dart:convert';
 import 'dart:io' show File;
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:keda_flutter/service/request/edit_user_request.dart';
 import 'package:keda_flutter/service/request/login_request.dart';
 import 'package:keda_flutter/service/response/forgot_password_response.dart';
 import 'package:keda_flutter/service/response/login_response.dart';
 import 'package:keda_flutter/service/response/products_response.dart';
+import 'package:keda_flutter/service/response/user_account_status_response.dart';
+import 'package:keda_flutter/service/response/user_rate_review_response.dart';
 import 'package:keda_flutter/ui/authentication/login_screen.dart';
 import 'package:path/path.dart';
 import '../localization/localization.dart';
 import '../model/user.dart';
+import '../ui/authentication/models/login_data_model.dart';
 import '../utils/logger.dart';
 import '../utils/navigation/navigation_service.dart';
 import '../utils/routes.dart';
@@ -63,7 +67,7 @@ class ApiProvider {
       arrButton: [Translations.current?.btnOk ?? ''],
       barrierDismissible: false,
       callback: (index) async {
-        await Data.currentUser.resetUserDetail();
+        await LoginData.currentUser.resetUserDetail();
         NavigationService().navigateRemoveAndUntilNamed(LoginScreen.routeName);
       },
     );
@@ -216,10 +220,10 @@ class ApiProvider {
   //Login API
   Future<LoginResponse> loginApi( LoginRequest params) async {
     final HttpResponse response = await postRequest(ApiType.login, params: params.toJson());
-    Data? user;
+    LoginData? user;
     Logger().v("Response Code in login API: === ${response.status} " );
     if ((response.status == 200) && (response.json is Map)) {
-      user = Data.currentUser;
+      user = LoginData.currentUser;
       user.updateUserDetail(response.json);
       await user.saveUserDetail();
     }
@@ -266,5 +270,39 @@ class ApiProvider {
     final HttpResponse response = await postRequest(ApiType.fetchRecentProduct, params: params);
     Logger().v("Response Code in fetch Recent API: === ${response.status} " );
     return ProductsResponse(status: response.status, message: response.errMessage, data: response.json, totalRecords: response.totalRecords);
+  }
+
+  //Fetched User Rate & Review
+  Future<UserRateReviewResponse> fetUserRateReview(Map<String, dynamic> params) async {
+    final HttpResponse response = await postRequest(ApiType.fetchUserRateReview, params: params);
+    Logger().v("Response Code in fetch User Rate & Review API: === ${response.status} " );
+    return UserRateReviewResponse(status: response.status, message: response.errMessage, json: response.json);
+  }
+
+  //Fetched User Account Status API
+  Future<UserAccountStatusResponse> fetchUserAccountStatus(Map<String, dynamic> params) async {
+    final HttpResponse response = await postRequest(ApiType.fetchAccountStatus, params: params);
+    Logger().v("Response Code in fetch User Account Status API: === ${response.status} " );
+    return UserAccountStatusResponse(status: response.status, message: response.errMessage, json: response.json);
+  }
+
+  //Fetched All User Products API
+  Future<ProductsResponse> fetchUserProducts(Map<String, dynamic> params) async {
+    final HttpResponse response = await postRequest(ApiType.fetchUserProducts, params: params);
+    Logger().v("Response Code in fetch All user products API: === ${response.status} " );
+    return ProductsResponse(status: response.status, message: response.errMessage,  data: response.json, totalRecords: response.totalRecords);
+  }
+
+  //Edit User API
+  Future<LoginResponse> editUserAPI(EditUserRequest params) async {
+    final HttpResponse response = await postRequest(ApiType.editUser, params: params.toJson());
+    Logger().v("Response Code in Edit User API: === ${response.status} " );
+    LoginData? user;
+    if ((response.status == 200) && (response.json is Map)) {
+      user = LoginData.currentUser;
+      user.updateUserDetail(response.json);
+      await user.saveUserDetail();
+    }
+    return LoginResponse(status: response.status, message: response.errMessage, loginUserData: user);
   }
 }

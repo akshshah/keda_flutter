@@ -3,6 +3,7 @@ import 'package:keda_flutter/ui/bottomNavigation/explore_module/screens/filter_b
 import 'package:keda_flutter/utils/app_color.dart';
 import 'package:keda_flutter/utils/utils.dart';
 
+import '../../../../utils/ui_text_style.dart';
 import 'explore_tabs_screen.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -48,14 +49,11 @@ class ExploreScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Text(
                           "Explore",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppColor.heading_text,
-                            fontSize: 24,
-                          ),
+                          style: UITextStyle.semiBoldTextStyle(fontSize: 24),
+                          textAlign: TextAlign.start,
                         ),
                       ),
                       InkWell(

@@ -1,28 +1,14 @@
 import 'package:flutter/material.dart';
-
+import 'package:keda_flutter/utils/ui_text_style.dart';
 
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_image.dart';
-import '../../explore_module/models/DealItem.dart';
+import '../../explore_module/models/product_model.dart';
 
-class MyItemWidget extends StatelessWidget {
-  const MyItemWidget({Key? key, required this.dealItem}) : super(key: key);
+class MyProductWidget extends StatelessWidget {
+  const MyProductWidget({Key? key, required this.product}) : super(key: key);
 
-  final DealItem dealItem;
-
-  TextStyle headingStyle() {
-    return const TextStyle(
-        fontWeight: FontWeight.w600, color: AppColor.heading_text);
-  }
-
-  TextStyle textStyle() {
-    return const TextStyle(
-        fontWeight: FontWeight.w600, color: AppColor.price_color);
-  }
-
-  TextStyle categoryStyle(){
-    return const TextStyle(fontWeight: FontWeight.w600, fontStyle: FontStyle.italic, color: AppColor.dark_sky_blue);
-  }
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +28,16 @@ class MyItemWidget extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10)),
-                child: Image.asset(
-                  dealItem.type == 1 ?  AppImage.watch : dealItem.type == 2 ? AppImage.headphone : AppImage.shoeImage ,
+                child: FadeInImage(
                   height: 130,
                   width: 130,
                   fit: BoxFit.cover,
+                  fadeInDuration: const Duration(milliseconds: 100),
+                  placeholder: AssetImage(AppImage.itemPlaceholder,),
+                  imageErrorBuilder: (ctx, error, stacktrace) {
+                    return Image.asset( AppImage.itemPlaceholder, fit: BoxFit.cover, height: 130, width: 130,);
+                  },
+                  image: NetworkImage(product.productMedias?.first.mediaPath ?? "",),
                 ),
               ),
               const SizedBox(
@@ -55,21 +46,21 @@ class MyItemWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(dealItem.category, style: categoryStyle()),
+                  Text(product.categoryName ?? "", style: UITextStyle.semiBoldItalicTextStyle(color: AppColor.dark_sky_blue)),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(dealItem.name, style: headingStyle(),),
+                  Text(product.title ?? "", style: UITextStyle.semiBoldTextStyle(),),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text("\$ ${dealItem.price}/hr", style: textStyle(),),
+                  Text("\$ ${product.price}/hr", style: UITextStyle.semiBoldTextStyle(color: AppColor.price_color),),
                   const SizedBox(
                     height: 10,
                   ),
                   Row(
                     children: [
-                      Text("Project Status :", style: headingStyle(),),
+                      Text("Project Status :", style: UITextStyle.semiBoldTextStyle(),),
                       const SizedBox(
                         width: 10,
                       ),

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:keda_flutter/utils/app_color.dart';
 
-import '../../../../service/response/login_response.dart';
 import '../../../../utils/logger.dart';
 import '../../../../utils/utils.dart';
+import '../../../authentication/models/login_data_model.dart';
 
 class AboutMeTab extends StatelessWidget {
   AboutMeTab({Key? key}) : super(key: key);
 
-  Data? userData;
+  LoginData? userData;
 
   Future<void> getUserDetails(BuildContext context) async{
     try {
-      userData = await Data.getUserDetails() ;
+      userData = await LoginData.getUserDetails() ;
     } catch (e) {
       Logger().e(e.toString());
       Utils.showSnackBarWithContext(context, "Something went wrong");

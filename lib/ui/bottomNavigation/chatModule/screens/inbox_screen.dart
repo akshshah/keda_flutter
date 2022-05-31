@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../utils/app_color.dart';
+import '../../../../utils/ui_text_style.dart';
 import 'inbox_tabs_screen.dart';
 
 
@@ -18,15 +19,12 @@ class InboxScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
                         child: Text(
                           "Inbox",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppColor.heading_text,
-                            fontSize: 24,
-                          ),
+                          style: UITextStyle.semiBoldTextStyle(fontSize: 24),
+                          textAlign: TextAlign.start,
                         ),
                       ),
                     ],

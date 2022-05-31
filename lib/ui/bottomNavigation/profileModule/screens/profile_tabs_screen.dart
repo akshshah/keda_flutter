@@ -53,7 +53,7 @@ class ProfileTabsScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             AboutMeTab(),
-            const MyProductsTab()
+            MyProductsTab()
           ],
         ),
       ),

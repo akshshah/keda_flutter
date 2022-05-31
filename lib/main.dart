@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:keda_flutter/ui/authentication/forgot_password_screen.dart';
-import 'package:keda_flutter/ui/authentication/login_screen.dart';
-import 'package:keda_flutter/ui/authentication/register_screen.dart';
-import 'package:keda_flutter/ui/home_screen.dart';
-import 'package:keda_flutter/utils/app_color.dart';
 import 'package:keda_flutter/utils/application_wrapper.dart';
 
 import 'localization/app_model.dart';

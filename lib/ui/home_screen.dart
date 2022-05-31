@@ -13,7 +13,7 @@ import 'bottomNavigation/explore_module/screens/explore_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
-  static const routeName = '/home_screen';
+  static const routeName = '/home-screen';
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

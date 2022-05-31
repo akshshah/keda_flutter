@@ -189,7 +189,7 @@ class MediaSelector {
       }
     }
 
-    if ((source == ImageSource.gallery) && (purpose == MediaFor.post || purpose == MediaFor.moment || purpose == MediaFor.article)) {
+    if ((source == ImageSource.gallery) && (purpose == MediaFor.post || purpose == MediaFor.moment || purpose == MediaFor.article )) {
       List<Asset> resultList = [];
 
       try {
@@ -237,9 +237,11 @@ class MediaSelector {
 
 
       File? selectedFile = (pickedFile != null) ? File(pickedFile.path) : null;
-      if ((pickedFile != null) && isCropImage) {
-        selectedFile = (await ImageCropper().cropImage(
-            sourcePath: File(pickedFile.path).path,
+      CroppedFile? croppedFile;
+      Logger().v("Selected File ${selectedFile?.path}");
+      if (selectedFile != null && isCropImage) {
+        croppedFile = await ImageCropper().cropImage(
+            sourcePath: selectedFile.path,
             aspectRatioPresets: [
               CropAspectRatioPreset.square,
               CropAspectRatioPreset.ratio3x2,
@@ -255,16 +257,17 @@ class MediaSelector {
                   initAspectRatio: CropAspectRatioPreset.original,
                   lockAspectRatio: false),
               IOSUiSettings(
-                minimumAspectRatio: 1.0,
                 title: 'Cropper',
-                doneButtonTitle: Translations.current!.btnSave,
-                cancelButtonTitle: Translations.current!.btnCancel,
               )
             ],
-        )) as File?;
-      } else {
-        selectedFile = null;
+        );
+        Logger().v("Cropped File  ${croppedFile?.path ?? ''} ");
+        selectedFile = croppedFile != null ? File(croppedFile.path) : selectedFile;
       }
+      // else {
+      //   selectedFile = null;
+      // }
+
       Logger().v("Path Galley :: ${selectedFile?.path ?? ''}");
       if (selectedFile != null) {
         File fixedRotationFile = await FlutterExifRotation.rotateAndSaveImage(path: selectedFile.path);

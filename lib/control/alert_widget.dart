@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keda_flutter/utils/logger.dart';
 import '../localization/localization.dart';
 import '../utils/app_color.dart';
 import '../utils/enum.dart';
@@ -22,6 +23,7 @@ class _AlertWidgetState extends State<AlertWidget> {
 
   Widget? get titleWidget {
     String mainTitle = widget.title ?? '';
+    Logger().v("Main Title $mainTitle");
     if (mainTitle.isEmpty) {
       mainTitle = Translations.current?.appName ?? '';
     }
@@ -50,7 +52,7 @@ class _AlertWidgetState extends State<AlertWidget> {
           mainTitle,
           style: UITextStyle.getTextStyle(
             fontWeight: FontWeight.w700,
-            fontSize: 17,
+            fontSize: 20,
             color: AppColor.heading_text,
             letterSpacing: 0.68,
           ),
@@ -67,7 +69,7 @@ class _AlertWidgetState extends State<AlertWidget> {
         widget.message ?? '',
         style: UITextStyle.getTextStyle(
           fontWeight: FontWeight.w500,
-          fontSize: 12,
+          fontSize: 14,
           color: AppColor.heading_text,
           letterSpacing: 0.68,
         ),
@@ -132,9 +134,18 @@ class _AlertWidgetState extends State<AlertWidget> {
       return AlertDialog(
         title: titleWidget,
         content: messageWidget,
-        actions: actionWidget,
+        actions: [
+          SizedBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ...actionWidget
+              ],
+            ),
+          )
+        ],
         backgroundColor: AppColor.whiteColor,
-        contentPadding: const EdgeInsets.fromLTRB(24.0, 7.0, 20.0, 12.0),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 12.0),
       );
     }
   }

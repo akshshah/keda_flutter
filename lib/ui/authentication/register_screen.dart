@@ -49,8 +49,8 @@ class RegisterScreen extends StatelessWidget {
                         child: Image.asset(AppImage.personImage),
                       ),
                       Positioned(
-                        bottom: 3,
-                        right: 3,
+                        bottom: 10,
+                        right: 10,
                         child: Container(
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
@@ -60,7 +60,7 @@ class RegisterScreen extends StatelessWidget {
                           child: const Icon(
                             Icons.photo_camera,
                             color: Colors.white,
-                            size: 20,
+                            size: 15,
                           ),
                         ),
                       )

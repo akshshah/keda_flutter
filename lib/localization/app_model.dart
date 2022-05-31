@@ -1,14 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:keda_flutter/service/response/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/user.dart';
 import '../service/reachability.dart';
-import '../utils/app_color.dart';
-import '../utils/channel/platform_channel.dart';
+import '../ui/authentication/models/login_data_model.dart';
 import '../utils/device_utils.dart';
-import '../utils/firebase_cloud_messaging.dart';
 import '../utils/logger.dart';
 
 
@@ -67,9 +62,9 @@ class AppModel with ChangeNotifier {
     // });
 
     /// User Login Status
-    isUserLogin = await Data.isUserLogin();
+    isUserLogin = await LoginData.isUserLogin();
     if (isUserLogin) {
-      Data.currentUser.loadUserDetails();
+      LoginData.currentUser.loadUserDetails();
     }
 
     isLoading = false;

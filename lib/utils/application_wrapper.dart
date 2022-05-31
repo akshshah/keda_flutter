@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keda_flutter/providers/explore_screen_provider.dart';
 import 'package:keda_flutter/providers/login_screen_provider.dart';
+import 'package:keda_flutter/providers/profile_screen_provider.dart';
 import 'package:keda_flutter/providers/saved_screen_provider.dart';
 import 'package:keda_flutter/providers/settings_screen_provider.dart';
 import 'package:keda_flutter/utils/app_font.dart';
@@ -36,6 +37,7 @@ class ApplicationWrapper extends StatelessWidget {
               ChangeNotifierProvider(create: (ctx) => SettingsProvider()),
               ChangeNotifierProvider(create: (ctx) => SavedProvider()),
               ChangeNotifierProvider(create: (ctx) => ExploreProvider()),
+              ChangeNotifierProvider(create: (ctx) => ProfileProvider()),
             ],
             child: ScreenUtilInit(
               designSize: const Size(375, 812),
@@ -66,7 +68,7 @@ class ApplicationWrapper extends StatelessWidget {
                       appBarTheme: AppBarTheme(
                         backgroundColor: Colors.transparent,
                         elevation: 0,
-                        titleTextStyle: UITextStyle.boldTextStyle(fontSize: 18),
+                        titleTextStyle: UITextStyle.semiBoldTextStyle(fontSize: 20),
                         foregroundColor: AppColor.heading_text,
                       ),
                     ),

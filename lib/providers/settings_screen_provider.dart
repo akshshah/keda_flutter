@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keda_flutter/providers/base_bloc.dart';
 import 'package:keda_flutter/service/response/base_response.dart';
-import 'package:keda_flutter/service/response/login_response.dart';
 
 class SettingsProvider extends BaseBloc with ChangeNotifier{
 

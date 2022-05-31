@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:keda_flutter/ui/bottomNavigation/rentalModule/screens/rental_tabs_screen.dart';
 
 import '../../../../utils/app_color.dart';
+import '../../../../utils/ui_text_style.dart';
 
 
 class RentalScreen extends StatelessWidget {
@@ -19,14 +20,11 @@ class RentalScreen extends StatelessWidget {
                 children: [
                   Row(
                     children:  [
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          "Inbox",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppColor.heading_text,
-                            fontSize: 24,
-                          ),
+                          "Rentals",
+                          style: UITextStyle.semiBoldTextStyle(fontSize: 24),
+                          textAlign: TextAlign.start,
                         ),
                       ),
                       TextButton.icon(

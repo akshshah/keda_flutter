@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:keda_flutter/service/response/products_response.dart';
 
 import '../../../../utils/app_color.dart';
 import '../../../../utils/app_image.dart';
 import '../../../../utils/ui_text_style.dart';
+import '../models/product_model.dart';
 
 class GridProductWidget extends StatelessWidget {
   const GridProductWidget({Key? key, required this.product, required this.isRecent}) : super(key: key);
@@ -33,7 +33,7 @@ class GridProductWidget extends StatelessWidget {
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    fadeInDuration: const Duration(milliseconds: 300),
+                    fadeInDuration: const Duration(milliseconds: 100),
                     placeholder: AssetImage(AppImage.itemPlaceholder,),
                     image: NetworkImage(product.productMedias?.first.mediaPath ?? "",),
                     imageErrorBuilder: (ctx, error, stacktrace) {

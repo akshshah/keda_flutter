@@ -15,7 +15,7 @@ class UITextStyle extends Object {
       double? wordSpacing,
       double? lineSpacing,
       TextDecoration? decoration,
-      TextOverflow? overflow = TextOverflow.ellipsis,}) {
+      TextOverflow? overflow = TextOverflow.clip,}) {
     double finalFontSize = (fontSize ?? 14).toDouble();
     if (isFixed) {
       finalFontSize = finalFontSize.sp;

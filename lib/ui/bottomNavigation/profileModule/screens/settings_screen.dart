@@ -3,16 +3,15 @@ import 'package:icofont_flutter/icofont_flutter.dart';
 import 'package:keda_flutter/providers/settings_screen_provider.dart';
 import 'package:keda_flutter/ui/authentication/login_screen.dart';
 import 'package:keda_flutter/ui/bottomNavigation/settingsModule/screens/my_address_screen.dart';
-import 'package:keda_flutter/ui/home_screen.dart';
 import 'package:keda_flutter/utils/ui_text_style.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../localization/localization.dart';
-import '../../../../service/response/login_response.dart';
 import '../../../../utils/app_color.dart';
 import '../../../../utils/logger.dart';
 import '../../../../utils/navigation/navigation_service.dart';
 import '../../../../utils/utils.dart';
+import '../../../authentication/models/login_data_model.dart';
 
 
 class SettingsScreen extends StatelessWidget {
@@ -66,7 +65,7 @@ class SettingsScreen extends StatelessWidget {
       await Utils.dismissProgressDialog(context);
       Logger().e("Response Code : === ${response?.status} " );
       if (response?.status == 200) {
-        await Data.currentUser.resetUserDetail();
+        await LoginData.currentUser.resetUserDetail();
         NavigationService().navigateRemoveAndUntilNamed(LoginScreen.routeName);
       }
       else {

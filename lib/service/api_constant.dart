@@ -1,11 +1,8 @@
 import 'dart:io';
-import 'package:keda_flutter/service/response/login_response.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 import '../localization/app_model.dart';
-import '../model/user.dart';
-import '../utils/device_utils.dart';
-import '../utils/firebase_cloud_messaging.dart';
+import '../ui/authentication/models/login_data_model.dart';
 import '../utils/logger.dart';
 import '../utils/navigation/navigation_service.dart';
 
@@ -17,6 +14,10 @@ enum ApiType {
   fetchSavedProduct,
   fetchRecommendProduct,
   fetchRecentProduct,
+  fetchUserRateReview,
+  fetchAccountStatus,
+  fetchUserProducts,
+  editUser,
 }
 
 class PreferenceKey {
@@ -44,6 +45,14 @@ class ApiConstant {
         return 'product/getRecommendedProduct';
       case ApiType.fetchRecentProduct:
         return 'product/fetchRecentSearch';
+      case ApiType.fetchUserRateReview:
+        return 'user/getRateAndReviewByUserId';
+      case ApiType.fetchAccountStatus:
+        return 'stripe/getAccountStatus';
+      case ApiType.fetchUserProducts:
+        return 'product/getAllProductByUserId';
+      case ApiType.editUser:
+        return 'user/editUser';
       default:
         return "";
     }
@@ -74,8 +83,8 @@ class ApiConstant {
       // paramsFinal['fcmToken'] = FireBaseCloudMessagingWrapper().fcmToken;
     }
 
-    if ((Data.currentUser.accessToken != null) && Data.currentUser.accessToken!.isNotEmpty) {
-      headers['api-key'] = Data.currentUser.accessToken!;
+    if ((LoginData.currentUser.accessToken != null) && LoginData.currentUser.accessToken!.isNotEmpty) {
+      headers['api-key'] = LoginData.currentUser.accessToken!;
     }
 
     Logger().d("Request Start Time :: ${DateTime.now()}");
