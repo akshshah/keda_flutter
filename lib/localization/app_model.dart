@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../service/reachability.dart';
 import '../ui/authentication/models/login_data_model.dart';
 import '../utils/device_utils.dart';
+import '../utils/firebase_cloud_messaging.dart';
 import '../utils/logger.dart';
 
 
@@ -56,10 +57,10 @@ class AppModel with ChangeNotifier {
     // await PlatformChannel().testMethod();
 
     /// Update FCM Token
-    // FireBaseCloudMessagingWrapper messagingWrapper = FireBaseCloudMessagingWrapper();
-    // Future.delayed(const Duration(seconds: 3), () async {
-    //   await messagingWrapper.getFCMToken();
-    // });
+    FireBaseCloudMessagingWrapper messagingWrapper = FireBaseCloudMessagingWrapper();
+    Future.delayed(const Duration(seconds: 3), () async {
+      await messagingWrapper.getFCMToken();
+    });
 
     /// User Login Status
     isUserLogin = await LoginData.isUserLogin();

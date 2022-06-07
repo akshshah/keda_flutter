@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "650515667644",
+    "project_id": "keda-flutter-b2efd",
+    "storage_bucket": "keda-flutter-b2efd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650515667644:android:0211517862ddd34a488eb9",
+        "android_client_info": {
+          "package_name": "com.example.keda_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "650515667644-rlm8qkd19sucba0bm2d8ef268nuano24.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8V9CnpaMr2c-YF0sGOWR6rfkKRucZW9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "650515667644-rlm8qkd19sucba0bm2d8ef268nuano24.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

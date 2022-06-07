@@ -5,6 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:keda_flutter/service/request/edit_user_request.dart';
 import 'package:keda_flutter/service/request/login_request.dart';
+import 'package:keda_flutter/service/request/send_chat_request.dart';
+import 'package:keda_flutter/service/response/chat_response.dart';
 import 'package:keda_flutter/service/response/forgot_password_response.dart';
 import 'package:keda_flutter/service/response/login_response.dart';
 import 'package:keda_flutter/service/response/products_response.dart';
@@ -283,6 +285,12 @@ class ApiProvider {
   Future<UserAccountStatusResponse> fetchUserAccountStatus(Map<String, dynamic> params) async {
     final HttpResponse response = await postRequest(ApiType.fetchAccountStatus, params: params);
     Logger().v("Response Code in fetch User Account Status API: === ${response.status} " );
+
+    if ((response.status == 200) && (response.json is Map)) {
+      LoginData user = LoginData.currentUser;
+      user.updateUserDetail(response.json);
+      await user.saveUserDetail();
+    }
     return UserAccountStatusResponse(status: response.status, message: response.errMessage, json: response.json);
   }
 
@@ -304,5 +312,12 @@ class ApiProvider {
       await user.saveUserDetail();
     }
     return LoginResponse(status: response.status, message: response.errMessage, loginUserData: user);
+  }
+
+  //Send Chat Message API
+  Future<ChatResponse> sendChatMessageAPI(SendChatRequest params) async {
+    final HttpResponse response = await postRequest(ApiType.sendChatMessage, params: params.toJson());
+    Logger().v("Response Code in Send Chat Message API: === ${response.status} " );
+    return ChatResponse(status: response.status, message: response.errMessage,  json: response.json);
   }
 }

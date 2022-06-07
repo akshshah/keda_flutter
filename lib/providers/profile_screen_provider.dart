@@ -9,6 +9,8 @@ import 'package:keda_flutter/service/response/user_account_status_response.dart'
 import 'package:keda_flutter/service/response/user_rate_review_response.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:simple_s3/simple_s3.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as sys_paths;
 
 import '../ui/authentication/models/login_data_model.dart';
 import '../ui/bottomNavigation/profileModule/models/user_account_model.dart';
@@ -76,12 +78,18 @@ class ProfileProvider extends BaseBloc with ChangeNotifier{
 
   checkPermissionAndUploadImage(BuildContext context) async {
     MediaSelector mediaSelector = MediaSelector();
-    mediaSelector.chooseImageWithOption(context, purpose: MediaFor.profile, callBack: (file, type) {
+    mediaSelector.chooseImageWithOption(context, purpose: MediaFor.profile, callBack: (file, type) async {
       if(file != null){
         imageFile = file.first;
         imageUri = imageFile?.uri;
         Logger().v("Selected path ${imageUri?.path}");
         Logger().v("Last Path ${imageUri?.pathSegments.last}");
+
+        //For saving a file to device
+        final appDir = await sys_paths.getApplicationDocumentsDirectory();
+        final fileName = path.basename(imageFile?.path ?? "newFile");
+        final savedImage = await imageFile?.copy("${appDir.path}/$fileName");
+        Logger().v("Saved Path ${savedImage?.path}");
       }
       notifyListeners();
     }, isCropImage: true);
@@ -112,6 +120,20 @@ class ProfileProvider extends BaseBloc with ChangeNotifier{
   Future<String?> _upload() async {
     String? result;
     SimpleS3 _simpleS3 = SimpleS3();
+
+    /**
+     * To get Upload percentage
+      */
+    // StreamBuilder<dynamic>(
+    //     stream: _simpleS3.getUploadPercentage,
+    //     builder: (context, snapshot) {
+    //       return new Text(
+    //         snapshot.data == null
+    //             ? "Simple S3 Test"
+    //             : "Uploaded: ${snapshot.data}",
+    //       );
+    //     })
+
     if (result == null) {
       try {
         result = await _simpleS3.uploadFile(

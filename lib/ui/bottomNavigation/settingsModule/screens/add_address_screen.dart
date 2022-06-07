@@ -4,22 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:icofont_flutter/icofont_flutter.dart';
-import 'package:keda_flutter/utils/channel/platform_channel.dart';
-import 'package:keda_flutter/utils/logger.dart';
+import 'package:keda_flutter/providers/add_address_screen_provider.dart';
+import 'package:keda_flutter/utils/credentials.dart';
 import 'package:keda_flutter/utils/mixin/common_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_api_headers/google_api_headers.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../utils/app_color.dart';
 import '../../../../utils/ui_text_style.dart';
 
-const kGoogleApiKey = "API-KEY";
 
 class AddAddressScreen extends StatefulWidget {
   const AddAddressScreen({Key? key}) : super(key: key);
@@ -33,79 +28,25 @@ class AddAddressScreen extends StatefulWidget {
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
-  final Completer<GoogleMapController> _controller = Completer();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _searchController = TextEditingController();
-  final Permission _permission = Permission.location;
   bool isHome = false;
   bool isWork = false;
   bool isOther = false;
+  late AddressProvider addressProvider;
 
   @override
   void initState() {
     super.initState();
-    checkPermission();
+    addressProvider = Provider.of<AddressProvider>(context, listen: false);
+    addressProvider.checkPermission();
   }
 
-  void checkPermission() async {
-    var ans = await PlatformChannel().checkForPermission(_permission);
-    Logger().d("Result $ans");
-    if(ans == true){
-      final GoogleMapController controller = await _controller.future;
-      var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      _myPosition = CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 18,);
-      controller.animateCamera(CameraUpdate.newCameraPosition(_myPosition));
-      _getAddressByLatLong();
-    }
-  }
-
-  Future<void> _gotoCurrentLocation() async {
-    var ans = await PlatformChannel().checkForPermission(_permission);
-    Logger().d("Result $ans");
-    if(ans == true){
-      final GoogleMapController controller = await _controller.future;
-      var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      CameraPosition _currentPosition = CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 18,);
-      controller.animateCamera(CameraUpdate.newCameraPosition(_currentPosition));
-      _getAddressByLatLong();
-    }
-  }
-
-  static CameraPosition _myPosition = const CameraPosition(
-    target: LatLng(21.208667, 72.839278),
-    zoom: 18,
-  );
-
-  LatLng _lastMapPosition =
-      LatLng(_myPosition.target.latitude, _myPosition.target.longitude);
-
-  void _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-    _getAddressByLatLong();
-  }
-
-  void _getAddressByLatLong() async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(_lastMapPosition.latitude, _lastMapPosition.longitude);
-    Placemark placemark = placemarks[0];
-    Logger().d(placemark.toString());
-    String? name = placemark.name ?? placemark.street;
-    String? locality = placemark.subLocality ?? placemark.locality;
-    String? administrativeArea = placemark.administrativeArea;
-    String? subAdministrativeArea = placemark.subAdministrativeArea;
-    String? country = placemark.country;
-    String? postalCode = placemark.postalCode;
-
-
-    String? address = "$name, $locality, $subAdministrativeArea, $administrativeArea $postalCode, $country, ";
-    _locationController.text = address;
-  }
 
   Future<void> _handlePressButton() async {
     // show input autocomplete with selected mode
     // then get the Prediction selected
     Prediction? p = await PlacesAutocomplete.show(
       context: context,
-      apiKey: kGoogleApiKey,
+      apiKey: Credentials.API_KEY,
       onError: onError,
       mode: Mode.overlay,
       types: [],
@@ -114,7 +55,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         hintText: 'Search',
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.white,
           ),
         ),
@@ -122,7 +63,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       components: [Component(Component.country, "us"), Component(Component.country, "in")],
       strictbounds: false,
     );
-    displayPrediction(p);
+    // displayPrediction(p);
+    addressProvider.displayPrediction(p, context);
   }
 
   void onError(PlacesAutocompleteResponse response) {
@@ -130,30 +72,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     ScaffoldMessenger.of(homeScaffoldKey.currentState?.context ?? context).showSnackBar(
       SnackBar(content: Text(response.errorMessage ?? "")),
     );
-  }
-
-  Future<void> displayPrediction(Prediction? p) async {
-    if (p != null) {
-      // get detail (lat/lng)
-      GoogleMapsPlaces _places = GoogleMapsPlaces(
-        apiKey: kGoogleApiKey,
-        apiHeaders: await const GoogleApiHeaders().getHeaders(),
-      );
-      PlacesDetailsResponse detail = await _places.getDetailsByPlaceId(p.placeId!);
-      final lat = detail.result.geometry?.location.lat;
-      final lng = detail.result.geometry?.location.lng;
-
-      if(lat != null && lng != null){
-        FocusScope.of(context).unfocus();
-        final GoogleMapController controller = await _controller.future;
-        CameraPosition _currentPosition = CameraPosition(target: LatLng(lat, lng), zoom: 18,);
-        controller.animateCamera(CameraUpdate.newCameraPosition(_currentPosition));
-        _searchController.text = detail.result.name;
-        _lastMapPosition = LatLng(lat, lng);
-        _getAddressByLatLong();
-      }
-
-    }
   }
 
 
@@ -176,89 +94,101 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: 0.50.sh,
-                  child: Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      GoogleMap(
-                        mapType: MapType.normal,
-                        compassEnabled: true,
-                        initialCameraPosition: _myPosition,
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
-                        },
-                        onCameraMove: _onCameraMove,
-                        zoomGesturesEnabled: true,
-                        zoomControlsEnabled: false,
-                        gestureRecognizers: Set()
-                          ..add(Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()))
-                          ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
-                          ..add(Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()))
-                          ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
-                          ..add(Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer())),
-                      ),
-                      Positioned(
-                        left: 10,
-                        right: 10,
-                        top: 5,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: AppColor.whiteColor,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: kElevationToShadow[2],
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.search,
-                                color: AppColor.gray,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                    hintText: "Search Address",
-                                    border: InputBorder.none,
-                                  ),
-                                  onTap: ( () {
-                                    _handlePressButton();
-                                  }),
-                                  controller: _searchController,
+                Consumer<AddressProvider>(builder: (ctx, addressData, child) {
+                  return SizedBox(
+                    height: 0.50.sh,
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        GoogleMap(
+                          mapType: MapType.normal,
+                          compassEnabled: true,
+                          initialCameraPosition: addressData.myPosition,
+                          onMapCreated: (GoogleMapController controller) {
+                            addressProvider.controller.complete(controller);
+                          },
+                          onTap: addressData.selectLocation,
+                          markers: {
+                            Marker(markerId: MarkerId("m1"), position: addressData.lastMapPosition),
+                          },
+                          zoomGesturesEnabled: true,
+                          zoomControlsEnabled: false,
+                          gestureRecognizers: Set()
+                            ..add(Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()))
+                            ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+                            ..add(Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()))
+                            ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+                            ..add(Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer())),
+                        ),
+
+                        //  Search Places in Google
+                        Positioned(
+                          left: 10,
+                          right: 10,
+                          top: 5,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 2, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: AppColor.whiteColor,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: kElevationToShadow[2],
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.search,
+                                  color: AppColor.gray,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      hintText: "Search Address",
+                                      border: InputBorder.none,
+                                    ),
+                                    onTap: ( () {
+                                      _handlePressButton();
+                                    }),
+                                    controller: addressData.searchController,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                          right: 15,
-                          bottom: 15,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.gps_fixed_rounded,
-                              size: 40,
-                            ),
-                            onPressed: () {
-                              _gotoCurrentLocation();
-                            },
-                            color: AppColor.colorPrimary,
-                          )),
-                      const Align(
-                          alignment: Alignment.center,
-                          child: Icon(
-                            IcoFontIcons.locationPin,
-                            size: 40,
-                            color: AppColor.colorPrimary,
-                          )),
-                    ],
-                  ),
-                ),
+
+                        // Goto Current Location
+                        Positioned(
+                            right: 15,
+                            bottom: 15,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.gps_fixed_rounded,
+                                size: 40,
+                              ),
+                              onPressed: () {
+                                addressData.gotoCurrentLocation();
+                              },
+                              color: AppColor.colorPrimary,
+                            )),
+
+                        // Center Location Pin Image
+                        // const Align(
+                        //     alignment: Alignment.center,
+                        //     child: Icon(
+                        //       IcoFontIcons.locationPin,
+                        //       size: 40,
+                        //       color: AppColor.colorPrimary,
+                        //     ),
+                        // ),
+                      ],
+                    ),
+                  );
+                }),
                 Container(
                   height: 0.40.sh,
                   decoration: const BoxDecoration(
@@ -328,15 +258,17 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                         color: AppColor.heading_text_08,
                       ),
                       Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CommonWidget.createTextField(
-                                labelText: "Location",
-                                maxLines: 2,
-                                controller: _locationController
-                              ),
+                              Consumer<AddressProvider>(builder: (ctx, addressData, child) {
+                                return CommonWidget.createTextField(
+                                    labelText: "Location",
+                                    maxLines: 2,
+                                    controller: addressData.locationController
+                                );
+                              }),
                               const SizedBox(
                                 height: 10,
                               ),

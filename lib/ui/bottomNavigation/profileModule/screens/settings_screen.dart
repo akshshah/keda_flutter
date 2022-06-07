@@ -66,6 +66,7 @@ class SettingsScreen extends StatelessWidget {
       Logger().e("Response Code : === ${response?.status} " );
       if (response?.status == 200) {
         await LoginData.currentUser.resetUserDetail();
+        Utils.showSnackBarWithContext(context, response?.message?? "");
         NavigationService().navigateRemoveAndUntilNamed(LoginScreen.routeName);
       }
       else {

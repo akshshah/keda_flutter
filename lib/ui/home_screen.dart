@@ -4,12 +4,8 @@ import 'package:keda_flutter/ui/bottomNavigation/rentalModule/screens/rental_scr
 import 'package:keda_flutter/ui/bottomNavigation/savedModule/screens/saved_screen.dart';
 import 'bottomNavigation/explore_module/screens/explore_screen.dart';
 
-
-
 import 'bottomNavigation/chatModule/screens/inbox_screen.dart';
 import 'bottomNavigation/explore_module/screens/explore_screen.dart';
-
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

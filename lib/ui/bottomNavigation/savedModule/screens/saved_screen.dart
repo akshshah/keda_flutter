@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:keda_flutter/providers/saved_screen_provider.dart';
 import 'package:keda_flutter/ui/bottomNavigation/explore_module/widget/grid_product_widget.dart';
+import 'package:keda_flutter/utils/app_image.dart';
 import 'package:keda_flutter/utils/ui_text_style.dart';
 import 'package:provider/provider.dart';
 
@@ -86,8 +87,26 @@ class _SavedScreenState extends State<SavedScreen> {
                         child: RefreshIndicator(
                           onRefresh: () => callSavedProductsAPI(context: context, refresh: true),
                           child: Consumer<SavedProvider>(
-                            builder: (ctx, savedData, child){
-                              return Stack(
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 300,
+                                    child: Image.asset(
+                                        AppImage.noDataImage
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10,),
+                                  Text("Oops!", style: UITextStyle.regularTextStyle(fontSize: 30),),
+                                  const SizedBox(height: 10,),
+                                  Text("No Saved Deals Available", style: UITextStyle.regularTextStyle(fontSize: 17),),
+                                ],
+                              ),
+                            ),
+                            builder: (ctx, savedData, ch){
+                               return savedData.savedProducts.isEmpty ?  ch! :  Stack(
                                 children: [
                                   SingleChildScrollView(
                                     controller: _scrollController,

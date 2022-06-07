@@ -1,6 +1,8 @@
 
 import 'package:keda_flutter/service/request/edit_user_request.dart';
 import 'package:keda_flutter/service/request/login_request.dart';
+import 'package:keda_flutter/service/request/send_chat_request.dart';
+import 'package:keda_flutter/service/response/chat_response.dart';
 import 'package:keda_flutter/service/response/forgot_password_response.dart';
 import 'package:keda_flutter/service/response/login_response.dart';
 import 'package:keda_flutter/service/response/products_response.dart';
@@ -45,4 +47,7 @@ class AppRepository {
 
   //Edit User API
   Future<LoginResponse> editUserAPI(EditUserRequest request) => apiProvider.editUserAPI(request);
+
+  //Send Chat Message API
+  Future<ChatResponse> sendChatMessageAPI(SendChatRequest request) => apiProvider.sendChatMessageAPI(request);
 }

@@ -15,5 +15,6 @@ class AppImage {
   static String splashText = '${AppImage._prefixPath}/splash_text.png';
   static String itemPlaceholder = '${AppImage._prefixPath}/item_placeholder.png';
   static String closeButton = '${AppImage._prefixPath}/close_button.png';
+  static String noDataImage = '${AppImage._prefixPath}/ic_blank_item.png';
 
 }

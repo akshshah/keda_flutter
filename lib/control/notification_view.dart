@@ -40,7 +40,7 @@ class NotificationView extends StatelessWidget {
                           children: [
                             ClipRRect(
                               child: Image.asset(
-                                AppImage.backArrow,
+                                AppImage.loginSymbol,
                                 width: 20.w,
                                 height: 20.w,
                               ),
@@ -123,7 +123,7 @@ class NotificationView extends StatelessWidget {
                       children: [
                         ClipRRect(
                           child: Image.asset(
-                            AppImage.backArrow,
+                            AppImage.loginSymbol,
                             width: 20.w,
                             height: 20.w,
                           ),

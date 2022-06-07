@@ -18,10 +18,12 @@ enum ApiType {
   fetchAccountStatus,
   fetchUserProducts,
   editUser,
+  sendChatMessage,
 }
 
 class PreferenceKey {
-  static String storeUser = "UserDetail";
+  static const String storeUser = "UserDetail";
+  static const String fcmToken = "FCMToken";
 }
 
 class ApiConstant {
@@ -53,6 +55,8 @@ class ApiConstant {
         return 'product/getAllProductByUserId';
       case ApiType.editUser:
         return 'user/editUser';
+      case ApiType.sendChatMessage:
+        return 'chat/sendMessage';
       default:
         return "";
     }

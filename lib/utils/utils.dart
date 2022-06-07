@@ -153,6 +153,7 @@ class Utils {
         fontSize: 16,
         color: AppColor.whiteColor,
       ),
+      textAlign: TextAlign.center,
     );
 
     final snackBar = SnackBar(

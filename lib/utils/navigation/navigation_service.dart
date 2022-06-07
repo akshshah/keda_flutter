@@ -1,4 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:keda_flutter/ui/bottomNavigation/firestore_chat_module/screens/chat_screen.dart';
+import 'package:keda_flutter/ui/bottomNavigation/profileModule/screens/edit_profile_screen.dart';
+import 'package:keda_flutter/ui/bottomNavigation/profileModule/screens/profile_screen.dart';
+import 'package:keda_flutter/ui/bottomNavigation/settingsModule/screens/add_address_screen.dart';
+import 'package:keda_flutter/ui/bottomNavigation/settingsModule/screens/my_address_screen.dart';
 import '../logger.dart';
 
 class NavigationService {
@@ -42,5 +49,19 @@ class NavigationService {
 
   void pop({required int result}) {
     return navigatorKey.currentState!.pop(result);
+  }
+
+  Future onSelectNotification(String? payload) async {
+    Logger().v("Notification Payload $payload");
+    if(payload != null){
+      final map = jsonDecode(payload);
+
+      if(map["type"] == "chat"){
+        NavigationService().navigateNamedTo(ChatScreen.routeName);
+      }
+      else if(map["type"] == "profile"){
+        NavigationService().navigateNamedTo(MyAddressScreen.routeName);
+      }
+    }
   }
 }

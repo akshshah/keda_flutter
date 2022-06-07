@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:keda_flutter/providers/add_address_screen_provider.dart';
+import 'package:keda_flutter/providers/chat_screen_provider.dart';
 import 'package:keda_flutter/providers/explore_screen_provider.dart';
 import 'package:keda_flutter/providers/login_screen_provider.dart';
 import 'package:keda_flutter/providers/profile_screen_provider.dart';
@@ -29,7 +31,7 @@ class ApplicationWrapper extends StatelessWidget {
     return ChangeNotifierProvider<AppModel>.value(
       value: appModel,
       child: Consumer<AppModel>(
-        builder: (context, value, child) {
+        builder: (ctx, value, child) {
           return MultiProvider(
             providers: [
               Provider<BaseBloc>.value(value: BaseBloc()),
@@ -38,10 +40,12 @@ class ApplicationWrapper extends StatelessWidget {
               ChangeNotifierProvider(create: (ctx) => SavedProvider()),
               ChangeNotifierProvider(create: (ctx) => ExploreProvider()),
               ChangeNotifierProvider(create: (ctx) => ProfileProvider()),
+              ChangeNotifierProvider(create: (ctx) => ChatProvider()),
+              ChangeNotifierProvider(create: (ctx) => AddressProvider()),
             ],
             child: ScreenUtilInit(
               designSize: const Size(375, 812),
-              builder: (context) {
+              builder: (ctx) {
                 return OverlaySupport.global(
                   child: MaterialApp(
                     onGenerateTitle: (BuildContext _context) =>
@@ -57,8 +61,7 @@ class ApplicationWrapper extends StatelessWidget {
                     supportedLocales: value.supportedLocales,
                     builder: (context, child) => MediaQuery(
                       child: child ?? Container(),
-                      data:
-                          MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                     ),
                     theme: ThemeData(
                       primarySwatch: AppColor.primarySwatch,
@@ -71,6 +74,11 @@ class ApplicationWrapper extends StatelessWidget {
                         titleTextStyle: UITextStyle.semiBoldTextStyle(fontSize: 20),
                         foregroundColor: AppColor.heading_text,
                       ),
+                      // buttonTheme: ButtonTheme.of(context).copyWith(
+                      //   buttonColor: AppColor.colorPrimary,
+                      //   textTheme: ButtonTextTheme.primary,
+                      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),),
+                      // ),
                     ),
                     home: SplashScreen(isUserLogin: value.isUserLogin),
                     routes: appRoutes,

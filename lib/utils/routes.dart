@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keda_flutter/ui/authentication/login_screen.dart';
+import 'package:keda_flutter/ui/bottomNavigation/firestore_chat_module/screens/auth_screen.dart';
+import 'package:keda_flutter/ui/bottomNavigation/firestore_chat_module/screens/chat_screen.dart';
 import 'package:keda_flutter/ui/bottomNavigation/profileModule/screens/edit_profile_screen.dart';
 import 'package:keda_flutter/ui/bottomNavigation/profileModule/screens/settings_screen.dart';
 import 'package:keda_flutter/ui/bottomNavigation/settingsModule/screens/add_address_screen.dart';
@@ -23,4 +25,6 @@ final Map<String, WidgetBuilder> appRoutes = {
   AddAddressScreen.routeName : (BuildContext context) => const AddAddressScreen(),
   EditProfileScreen.routeName : (BuildContext context) => EditProfileScreen(),
   SimpleS3Test.routeName : (BuildContext context) => SimpleS3Test(),
+  ChatScreen.routeName : (BuildContext context) => const ChatScreen(),
+  AuthScreen.routeName : (BuildContext context) => const AuthScreen(),
 };

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:keda_flutter/providers/base_bloc.dart';
+import 'package:keda_flutter/service/api_constant.dart';
 import 'package:keda_flutter/service/response/forgot_password_response.dart';
 import 'package:keda_flutter/utils/logger.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service/request/login_request.dart';
 import '../service/response/login_response.dart';
@@ -32,10 +34,12 @@ class LoginProvider extends BaseBloc with ChangeNotifier {
   }
 
   Future<LoginResponse> loginApi() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString(PreferenceKey.fcmToken);
     LoginRequest request = LoginRequest();
     request.email = _emailBehaviorSubject.value;
     request.password = _passwordBehaviorSubject.value;
-    request.deviceToken = "dLTHWwSpSdiNpJQBg7TSM5:APA91bEVZj6TzLG1cG-6YLcoWhYTmxOt8ebT-sriI1erEJ4GmDCx7G-fPwz-LjTMSvY1FUmQYRVhNHZMNdKdCn3wdNnVtWRiRUm92WPw1FrEoN8iMuqo2c0phv857pAUMSro15_gdQ3z";
+    request.deviceToken = token;
     request.userType = 2;
     request.platformType = "android";
     request.registerType = "normal";
